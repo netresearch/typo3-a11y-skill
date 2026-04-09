@@ -4,16 +4,16 @@ WCAG 2.1 AA accessibility patterns for TYPO3 v13+ sitepackage frontend developme
 
 ## Installation
 
-### Via Composer (recommended)
+### Claude Code Marketplace
+
+```bash
+claude install netresearch/typo3-a11y-skill
+```
+
+### Composer
 
 ```bash
 composer require netresearch/typo3-a11y-skill
-```
-
-### Via Claude Code CLI
-
-```bash
-claude skill add netresearch/typo3-a11y-skill
 ```
 
 ## References
