@@ -380,7 +380,7 @@ Each step should also have a **heading** (e.g., `<h2>Step 2: Shipping address</h
 
 ## TYPO3 Form Framework Integration
 
-The TYPO3 form framework generates its own HTML structure. To apply these accessibility patterns, **override the Fluid templates** and add ARIA attributes. See [form-framework.md](form-framework.md) for the full template override setup.
+The TYPO3 form framework generates its own HTML structure. To apply these accessibility patterns, **override the Fluid templates** and add ARIA attributes.
 
 Key points:
 

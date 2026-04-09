@@ -1,6 +1,6 @@
 # Pattern: Accessible Navigation
 
-Accessible main navigation usingUses `<nav>` with semantic lists, b13/menus TreeMenu, and proper ARIA attributes. Navigation is a **list of links**, never an ARIA menu.
+Accessible main navigation using `<nav>` with semantic lists, b13/menus TreeMenu, and proper ARIA attributes. Navigation is a **list of links**, never an ARIA menu.
 
 ## TypoScript DataProcessor
 
@@ -58,9 +58,9 @@ page.10.dataProcessing {
 ```
 
 **Key decisions:**
-- `aria-current="page"` on active link -- screen readers announce "current page" (7.2)
-- `role="list"` because `list-style: none` removes semantics in Safari/VoiceOver (7.3)
-- Link + Button pattern for submenus: parent stays a link, separate button toggles children (7.7)
+- `aria-current="page"` on active link -- screen readers announce "current page" (WCAG 2.4.8)
+- `role="list"` because `list-style: none` removes semantics in Safari/VoiceOver (WCAG 1.3.1)
+- Link + Button pattern for submenus: parent stays a link, separate button toggles children (WCAG 4.1.2)
 
 ## Mobile Toggle
 
