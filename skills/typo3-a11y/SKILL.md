@@ -1,13 +1,18 @@
 ---
 name: typo3-a11y
-description: "WCAG 2.1 AA compliance for TYPO3 projects (v13/v14.3 LTS; v14 backend improves a11y via native <dialog> modal #107443 and redesigned DocHeader). Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility. Also triggers for: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog, Camino theme a11y."
+description: "WCAG 2.1 AA compliance for TYPO3 projects (v13/v14 LTS; v14 backend improves a11y via native `<dialog>` modal #107443 and redesigned DocHeader). Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility. Also triggers for: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog, Camino theme a11y."
 ---
 
 # TYPO3 Accessibility Skill
 
 WCAG 2.1 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development.
 
-> **v14 a11y wins** (use as reference): native `<dialog>` modal replaces Bootstrap Modal (Breaking [#107443](https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Breaking-107443-MigrateModalComponentFromBootstrapToNativeDialog.html)) — proper focus trap + Esc-to-close for free; DocHeader breadcrumb rework (Feature #107875) improves landmark structure; CKEditor 5 v47 dark/light context-aware (#106964) respects `prefers-color-scheme`. Camino theme (v14.1+, #108539) is an alternative to `bootstrap-package` with configurable nav/footer — validate a11y when opting in.
+**v14 a11y wins** (use as reference):
+
+- Native `<dialog>` modal replaces Bootstrap Modal (Breaking [#107443](https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Breaking-107443-MigrateModalComponentFromBootstrapToNativeDialog.html)) — proper focus trap + Esc-to-close for free.
+- DocHeader breadcrumb rework (Feature [#107875](https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Feature-107875-DoctypeBasedRouting.html)) improves landmark structure.
+- CKEditor 5 v47 dark/light context-aware (Breaking [#106964](https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Breaking-106964-MakeCkeditorContextAwareByDefault.html)) respects `prefers-color-scheme`.
+- Camino theme (v14.1+, Feature [#108539](https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.1/Feature-108539-Default-Theme-Camino.html)) is an alternative to `bootstrap-package` with configurable nav/footer — validate a11y when opting in.
 
 ## Accessibility Recommendations
 
