@@ -1,6 +1,6 @@
 ---
 name: typo3-a11y
-description: "WCAG 2.1 AA compliance for TYPO3 projects (v13/v14 LTS; v14 backend improves a11y via native `<dialog>` modal #107443 and redesigned DocHeader). Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility. Also triggers for: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog, Camino theme a11y."
+description: "Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility in TYPO3 v13/v14 LTS projects. Covers WCAG 2.1 AA: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native `<dialog>` modal (#107443), Camino theme a11y."
 ---
 
 # TYPO3 Accessibility Skill
