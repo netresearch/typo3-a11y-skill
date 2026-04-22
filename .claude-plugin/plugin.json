@@ -1,6 +1,6 @@
 {
   "name": "typo3-a11y",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "WCAG 2.1 AA accessibility patterns for TYPO3 projects",
   "repository": "https://github.com/netresearch/typo3-a11y-skill",
   "license": "(MIT AND CC-BY-SA-4.0)",
