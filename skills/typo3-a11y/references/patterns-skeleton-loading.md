@@ -158,6 +158,11 @@ export async function loadContent(
         if (skeleton) {
             skeleton.setAttribute('hidden', '');
         }
+        Array.from(container.children).forEach((child) => {
+            if (child !== skeleton) {
+                child.remove();
+            }
+        });
         container.appendChild(fragment);
     } catch {
         if (skeleton) {
