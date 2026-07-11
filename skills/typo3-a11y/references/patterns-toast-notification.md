@@ -40,6 +40,7 @@ function createIcon(type: ToastType): SVGElement {
     svg.setAttribute('fill', 'none');
     svg.setAttribute('stroke', 'currentColor');
     svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('aria-hidden', 'true');
 
     const paths: Record<ToastType, string[]> = {
         success: ['M20 6L9 17l-5-5'],
