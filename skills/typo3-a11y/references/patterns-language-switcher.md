@@ -34,11 +34,11 @@ page.10.dataProcessing {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         aria-label="{f:translate(key: 'changeLanguage', extensionName: 'my_sitepackage')}">
-                    <img src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
-                         alt=""
-                         width="20"
-                         height="15"
-                         class="language-switcher__flag" />
+                    <f:image src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
+                             alt=""
+                             width="20"
+                             height="15"
+                             class="language-switcher__flag" />
                     <span class="language-switcher__label">{lang.twoLetterIsoCode}</span>
                 </button>
             </f:if>
@@ -52,21 +52,21 @@ page.10.dataProcessing {
                             <f:then>
                                 <f:link.typolink parameter="{lang.link}" class="dropdown-item language-switcher__item"
                                                  hreflang="{lang.hreflang}" title="{lang.navigationTitle}">
-                                    <img src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
-                                         alt=""
-                                         width="20"
-                                         height="15"
-                                         class="language-switcher__flag" />
+                                    <f:image src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
+                                             alt=""
+                                             width="20"
+                                             height="15"
+                                             class="language-switcher__flag" />
                                     <span>{lang.navigationTitle}</span>
                                 </f:link.typolink>
                             </f:then>
                             <f:else>
                                 <span class="dropdown-item language-switcher__item disabled" aria-disabled="true">
-                                    <img src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
-                                         alt=""
-                                         width="20"
-                                         height="15"
-                                         class="language-switcher__flag" />
+                                    <f:image src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
+                                             alt=""
+                                             width="20"
+                                             height="15"
+                                             class="language-switcher__flag" />
                                     <span>{lang.navigationTitle}</span>
                                 </span>
                             </f:else>
@@ -99,19 +99,19 @@ page.10.dataProcessing {
                             hreflang="{lang.hreflang}"
                             aria-current="{f:if(condition: '{lang.active}', then: 'true')}"
                             aria-label="{lang.navigationTitle}">
-                            <img src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
-                                 alt="{lang.navigationTitle}"
-                                 width="24"
-                                 height="18" />
+                            <f:image src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
+                                     alt="{lang.navigationTitle}"
+                                     width="24"
+                                     height="18" />
                         </f:link.typolink>
                     </f:then>
                     <f:else>
                         <span class="language-switcher-mobile__item disabled" aria-disabled="true">
-                            <img src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
-                                 alt="{lang.navigationTitle}"
-                                 width="24"
-                                 height="18"
-                                 class="opacity-50" />
+                            <f:image src="EXT:my_sitepackage/Resources/Public/Flags/{lang.twoLetterIsoCode}.svg"
+                                     alt="{lang.navigationTitle}"
+                                     width="24"
+                                     height="18"
+                                     class="opacity-50" />
                         </span>
                     </f:else>
                 </f:if>
