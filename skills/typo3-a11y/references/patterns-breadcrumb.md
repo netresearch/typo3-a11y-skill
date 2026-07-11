@@ -57,8 +57,8 @@ page.10.dataProcessing {
             {
                 "@type": "ListItem",
                 "position": {iter.cycle},
-                "name": "{item.title}",
-                "item": "{f:uri.typolink(parameter: item.link)}"
+                "name": {item.title -> f:format.json()},
+                "item": {f:uri.typolink(parameter: item.link) -> f:format.json()}
             }<f:if condition="!{iter.isLast}">,</f:if>
             </f:for>
         ]
