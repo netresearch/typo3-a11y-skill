@@ -1,6 +1,6 @@
 ---
 name: typo3-a11y
-description: "Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility in TYPO3 v13/v14 LTS projects. Covers WCAG 2.1 AA: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog element modal (#107443), Camino theme a11y."
+description: "Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility in TYPO3 v13/v14 LTS projects. Also covers frontend implementation patterns: sticky header, lazy loading, breadcrumb, language switcher, animations, scroll-to-anchor, skeleton loading, toast notifications, back-to-top. Covers WCAG 2.1 AA: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog element modal (#107443), Camino theme a11y."
 ---
 
 # TYPO3 Accessibility Skill
@@ -49,6 +49,17 @@ When creating or reviewing content elements, verify:
 - `references/patterns-disclosure-widget.md` -- Accordions, collapsible sections, hiding techniques
 - `references/patterns-clickable-cards.md` -- Accessible card/teaser click patterns
 - `references/patterns-responsive-tables.md` -- Mobile table patterns
+
+### Frontend Patterns
+- `references/patterns-sticky-header.md` -- Scroll-triggered header, IntersectionObserver, CSS transitions
+- `references/patterns-lazy-loading.md` -- Deferred component init, IntersectionObserver, placeholders
+- `references/patterns-breadcrumb.md` -- Breadcrumb nav, JSON-LD structured data
+- `references/patterns-language-switcher.md` -- Multi-language nav, b13/menus LanguageMenu, flags
+- `references/patterns-animations.md` -- Scroll animations, prefers-reduced-motion support
+- `references/patterns-scroll-to-anchor.md` -- Smooth scroll, sticky-header offset compensation
+- `references/patterns-skeleton-loading.md` -- CSS placeholder animations, layout stability
+- `references/patterns-toast-notification.md` -- Auto-dismiss notifications, ARIA live region
+- `references/patterns-back-to-top.md` -- Scroll-to-top button, visibility threshold
 
 ## Recommended Reading
 
