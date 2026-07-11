@@ -483,7 +483,7 @@ Safari + VoiceOver removes list semantics when `list-style: none` is applied. Fi
 }
 ```
 
-When adding animations, provide a subtle fallback (e.g., opacity fade) for reduced-motion users instead of removing all animation. For animation patterns with `prefers-reduced-motion` support, see the typo3-frontend-patterns skill.
+When adding animations, provide a subtle fallback (e.g., opacity fade) for reduced-motion users instead of removing all animation. For animation patterns with `prefers-reduced-motion` support, see `references/patterns-animations.md`.
 
 ---
 

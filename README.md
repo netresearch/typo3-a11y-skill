@@ -28,6 +28,15 @@ composer require netresearch/typo3-a11y-skill
 | `patterns-disclosure-widget.md` | Accordions, collapsible sections, content hiding techniques |
 | `patterns-clickable-cards.md` | Five clickable card patterns with trade-off analysis |
 | `patterns-responsive-tables.md` | Horizontal scroll and card reflow patterns for mobile tables |
+| `patterns-sticky-header.md` | Scroll-triggered fixed header with IntersectionObserver |
+| `patterns-lazy-loading.md` | Deferred component initialization with placeholder content |
+| `patterns-breadcrumb.md` | Breadcrumb navigation with JSON-LD structured data |
+| `patterns-language-switcher.md` | Multi-language navigation with b13/menus LanguageMenu |
+| `patterns-animations.md` | Scroll animations with prefers-reduced-motion support |
+| `patterns-scroll-to-anchor.md` | Smooth scroll with sticky header offset compensation |
+| `patterns-skeleton-loading.md` | CSS placeholder animations for content loading |
+| `patterns-toast-notification.md` | Auto-dismiss notifications with ARIA live region |
+| `patterns-back-to-top.md` | Scroll-to-top button with visibility threshold |
 
 ## License
 
