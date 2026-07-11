@@ -30,7 +30,8 @@ export function initBackToTop(): void {
     }, { passive: true });
 
     button.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        window.scrollTo({ top: 0, behavior });
 
         // Move focus to skip links / top of page for accessibility
         const skipLink = document.querySelector<HTMLElement>('.visually-hidden-focusable');

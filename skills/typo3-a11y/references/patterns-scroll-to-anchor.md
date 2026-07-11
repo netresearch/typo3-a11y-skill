@@ -19,9 +19,10 @@ function scrollToElement(target: HTMLElement): void {
     const offset = getHeaderHeight() + SCROLL_OFFSET;
     const top = target.getBoundingClientRect().top + window.scrollY - offset;
 
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     window.scrollTo({
         top,
-        behavior: 'smooth',
+        behavior,
     });
 
     // Move focus to target for accessibility
