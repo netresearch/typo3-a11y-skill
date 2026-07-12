@@ -26,7 +26,7 @@ composer require netresearch/typo3-a11y-skill
 | `patterns-accessible-forms.md` | Form labels, error handling, fieldsets, multi-step forms |
 | `patterns-accessible-filter.md` | Filtering, pagination, sorting, semantic table structure |
 | `patterns-disclosure-widget.md` | Accordions, collapsible sections, content hiding techniques |
-| `patterns-clickable-cards.md` | Five clickable card patterns with trade-off analysis |
+| `patterns-clickable-cards.md` | Accessible clickable-card pattern, with rejected alternatives noted |
 | `patterns-responsive-tables.md` | Horizontal scroll and card reflow patterns for mobile tables |
 | `patterns-sticky-header.md` | Scroll-triggered fixed header with IntersectionObserver |
 | `patterns-lazy-loading.md` | Deferred component initialization with placeholder content |

@@ -6,7 +6,7 @@ WCAG 2.1 Level AA compliance for TYPO3 sitepackage frontend code.
 
 1. [Language and Page Metadata](#language-and-page-metadata) -- WCAG 3.1.1, 2.4.2
 2. [Page Structure and Landmarks](#page-structure-and-landmarks) -- WCAG 1.3.1, 2.4.1
-3. [Headings and Content Order](#headings-and-content-order) -- WCAG 2.4.6, 1.3.2
+3. [Headings](#headings) -- WCAG 2.4.6, 1.3.2
 4. [Links](#links) -- WCAG 2.4.4, 1.4.1
 5. [Buttons](#buttons) -- WCAG 4.1.2, 1.3.1
 6. [Color and Contrast](#color-and-contrast) -- WCAG 1.4.3
@@ -14,7 +14,8 @@ WCAG 2.1 Level AA compliance for TYPO3 sitepackage frontend code.
 8. [Focus Management](#focus-management) -- WCAG 2.4.7, 2.4.3, 2.1.2
 9. [ARIA Reference](#aria-reference) -- WCAG 4.1.2
 10. [Automated Accessibility Testing](#automated-accessibility-testing)
-11. [Content Element Checklist](#content-element-checklist)
+11. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
+12. [Content Element Checklist](#content-element-checklist)
 
 Cross-references to dedicated pattern files:
 - `patterns-skiplinks.md` -- Skip link navigation
@@ -47,24 +48,7 @@ Use sparingly -- frequent voice profile switches interrupt reading flow. Well-es
 
 ### Page Title
 
-Every page must have a unique, descriptive `<title>`. In TYPO3, this comes from `config.pageTitleFirst = 1` and the page title field.
-
-Rules:
-- **Unique per page** -- never the same title on different pages
-- **Concise** -- under 60 characters
-- **Page name first, then site name**: `Products - Shop Name` (not `Shop Name - Products`)
-- **Context-dependent information** when relevant:
-
-```html
-<!-- Checkout step -->
-<title>Checkout (step 3 of 4) - Shop Name</title>
-<!-- Form errors -->
-<title>2 errors - Contact - Site Name</title>
-<!-- Search results -->
-<title>21 results for "term" - Site Name</title>
-<!-- Paginated results -->
-<title>Page 2 - Products - Site Name</title>
-```
+Every page must have a unique, descriptive `<title>`, under 60 characters, page name first (`Products - Shop Name`, not `Shop Name - Products`). In TYPO3, this comes from `config.pageTitleFirst = 1` and the page title field. Include context where it matters, e.g. `Checkout (step 3 of 4) - Shop Name` or `21 results for "term" - Site Name`.
 
 ### Viewport
 
@@ -85,15 +69,7 @@ Only this viewport meta tag is allowed:
 
 ### Landmarks
 
-Every page layout must contain these semantic regions:
-
-```html
-<header class="main-header" id="main-header">        <!-- banner -->
-<nav aria-label="Main navigation">                     <!-- navigation -->
-<main id="main-content">                               <!-- main -->
-<aside>                                                 <!-- complementary -->
-<footer class="main-footer" id="main-footer">          <!-- contentinfo -->
-```
+Every page layout must contain these semantic regions: `<header id="main-header">` (banner), `<nav>` (navigation), `<main id="main-content">` (main), `<aside>` (complementary), `<footer id="main-footer">` (contentinfo). These ids are the skip-link targets -- see `patterns-skiplinks.md`.
 
 ### Navigation Landmarks
 
@@ -135,38 +111,16 @@ When multiple landmarks of the same type exist, label them to differentiate:
 
 Without labels, screen reader users cannot distinguish between multiple `<nav>` elements.
 
-### Structure Main Content
-
-Use landmarks, headings, and lists to provide structure within `<main>`. Screen reader users rely on these to navigate complex pages. Group related content with `<section>` and label each with a heading or `aria-label`.
-
 ---
 
-## Headings and Content Order
-
-### Heading Hierarchy
+## Headings
 
 - Exactly one `<h1>` per page
 - Never skip heading levels (`<h1>` then `<h3>` without `<h2>`)
 - Headings create the document outline -- screen reader users navigate by headings
 - Every content section should start with a heading
 
-```html
-<h1>Page Title</h1>
-  <h2>Section</h2>
-    <h3>Subsection</h3>
-    <h3>Subsection</h3>
-  <h2>Another Section</h2>
-```
-
-### Content Order
-
-DOM order must match visual order. Content must make sense without CSS.
-
-**Never use these to reorder content semantically:**
-- `order` in Flexbox/Grid (visual reorder for responsive layout is OK if DOM stays logical)
-- `flex-direction: row-reverse` or `column-reverse` to reverse reading order
-- `tabindex` values > 0 to override tab order
-- CSS `float` tricks that put content before its heading in the DOM
+DOM order must match visual order -- see [Preserve Order](#preserve-order) below for the CSS properties that break this.
 
 ---
 
@@ -174,11 +128,7 @@ DOM order must match visual order. Content must make sense without CSS.
 
 ### Link vs. Button Decision
 
-| Use | Element | Behavior |
-|---|---|---|
-| Navigate to URL/anchor | `<a href="...">` | Changes page/location |
-| Trigger action on current page | `<button>` | Toggle, submit, open dialog |
-| Download file | `<a href="..." download>` | Initiates download |
+Use `<a href>` to navigate (URL, anchor, download), `<button>` to trigger an action on the current page (toggle, submit, open dialog).
 
 **Never:**
 - Use `<div onclick>` or `<span onclick>` as links or buttons
@@ -214,27 +164,9 @@ Links in body text **must be underlined**. Color alone is not sufficient -- 8% o
 }
 ```
 
-### Download Links
+### Download and Email Links
 
-Download links must communicate: file type, file size, and that it's a download.
-
-```html
-<a href="/files/report.pdf" download>
-    Annual Report 2024 (PDF, 2.4 MB)
-</a>
-```
-
-### Email Links
-
-Always show the email address as visible text:
-
-```html
-<!-- Good -->
-<a href="mailto:info@example.com">info@example.com</a>
-
-<!-- Bad: hides the address -->
-<a href="mailto:info@example.com">Contact us</a>
-```
+Download links must state file type and size: `<a href="/files/report.pdf" download>Annual Report 2024 (PDF, 2.4 MB)</a>`. Email links must show the address as visible text -- `<a href="mailto:info@example.com">info@example.com</a>`, not `<a href="mailto:info@example.com">Contact us</a>`.
 
 ### Linked Images
 
@@ -265,7 +197,7 @@ When using `target="_blank"`, inform users:
 </a>
 ```
 
-Or use a visual icon with screen reader text. Never open links in new tabs without indication.
+Never open links in new tabs without indication.
 
 ### Client-Side Rendering
 
@@ -273,7 +205,7 @@ Not applicable for standard TYPO3 sitepackages (server-side rendering). If using
 
 ### Clickable Card Patterns
 
-See `references/patterns-clickable-cards.md` for the 5 patterns with trade-offs. **Recommended: pseudo-element stretch pattern.**
+See `references/patterns-clickable-cards.md` for the recommended pseudo-element stretch pattern and why the naive alternatives (wrap-in-`<a>`, duplicate links, overlay) fail.
 
 ---
 
@@ -281,21 +213,12 @@ See `references/patterns-clickable-cards.md` for the 5 patterns with trade-offs.
 
 ### Button Labeling
 
-Every button must have an accessible name. Three patterns:
+Every button must have an accessible name -- text content is best (`<button>Save changes</button>`). For icon-only buttons, prefer visually-hidden text over `aria-label`:
 
 ```html
-<!-- 1. Text content (best) -->
-<button type="button">Save changes</button>
-
-<!-- 2. Icon button with visually hidden text (preferred) -->
 <button type="button">
     <svg aria-hidden="true">...</svg>
     <span class="visually-hidden">Close dialog</span>
-</button>
-
-<!-- 3. Icon button with aria-label (acceptable) -->
-<button type="button" aria-label="Close dialog">
-    <svg aria-hidden="true">...</svg>
 </button>
 ```
 
@@ -326,22 +249,7 @@ CSS `all: unset` also works but removes ALL styles including focus -- always re-
 
 ### Button States and Properties
 
-```html
-<!-- Toggle button (show/hide) -->
-<button type="button" aria-expanded="false" aria-controls="panel-1">
-    Show details
-</button>
-
-<!-- Pressed toggle (bold/italic toolbar) -->
-<button type="button" aria-pressed="false">Bold</button>
-
-<!-- Button with popup -->
-<button type="button" aria-haspopup="true" aria-expanded="false">
-    Options
-</button>
-```
-
-Update `aria-expanded` and `aria-pressed` via JavaScript when toggling.
+Toggle buttons (`aria-expanded` + `aria-controls`) and disclosure triggers are covered with full Fluid/TS implementations in `patterns-disclosure-widget.md` and `patterns-accessible-navigation.md`. For toolbar toggles (bold/italic), use `aria-pressed`; for buttons that open a popup or menu, add `aria-haspopup`. Update the attribute via JavaScript on every toggle, not just on init.
 
 ### Don't Disable Buttons
 
@@ -392,46 +300,29 @@ $danger: #dc3545;     // Must have 4.5:1 against $white for text
 
 ### Relative Units Only
 
-Key points:
-
-- `rem` for font sizes, spacing, padding, margins, media queries
-- `em` for component-relative sizing (e.g., icon size relative to text)
-- Never `px` except for 1px borders and box-shadows
-- Users who set larger browser font sizes must get proportionally larger layouts
-- At 200% zoom, no content loss or horizontal scrolling may occur
+`rem` for font sizes/spacing/margins/media queries, `em` for component-relative sizing (icon size relative to text), never `px` except 1px borders and box-shadows. Users who set larger browser font sizes must get proportionally larger layouts; at 200% zoom, no content loss or horizontal scrolling may occur.
 
 ### Media Queries for User Settings
 
-Respond to these user preferences via CSS media queries:
+Respond to these user preferences via CSS media queries: `prefers-color-scheme: dark` (swap colors, adjust image brightness/contrast), `prefers-contrast: more` (thicken borders, remove subtle backgrounds), `prefers-reduced-transparency: reduce` (replace semi-transparent overlays with solid colors).
+
+`forced-colors: active` (Windows High Contrast Mode) is the one that trips projects up: the browser overrides all colors, so custom backgrounds and box-shadows disappear -- ensure layouts still work with borders as the primary visual structure, and don't override system colors.
 
 ```scss
-// Dark mode
-@media (prefers-color-scheme: dark) {
-    // Swap colors, adjust image brightness/contrast
+// Basic/_accessibility.scss
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
-
-// Increased contrast
-@media (prefers-contrast: more) {
-    // Increase contrast ratios, thicken borders, remove subtle backgrounds
-}
-
-// Forced colors / Windows High Contrast Mode
-@media (forced-colors: active) {
-    // Use system colors, don't override backgrounds
-    // Borders become the primary visual structure
-    // Custom backgrounds and box-shadows disappear
-}
-
-// Reduced transparency
-@media (prefers-reduced-transparency: reduce) {
-    // Replace semi-transparent overlays with solid colors
-}
-
-// Reduced motion
-@media (prefers-reduced-motion: reduce) { ... }
 ```
 
-`forced-colors` is critical for Windows High Contrast Mode users. When active, the browser overrides all colors -- custom backgrounds and shadows disappear. Ensure layouts work with borders as the primary visual structure.
+When adding animations, provide a subtle fallback (e.g., opacity fade) for reduced-motion users instead of removing all animation. For animation patterns with `prefers-reduced-motion` support, see `references/patterns-animations.md`.
 
 ### `display: contents` Danger
 
@@ -466,24 +357,6 @@ Safari + VoiceOver removes list semantics when `list-style: none` is applied. Fi
     <li>...</li>
 </ul>
 ```
-
-### Reduced Motion
-
-```scss
-// Basic/_accessibility.scss
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-```
-
-When adding animations, provide a subtle fallback (e.g., opacity fade) for reduced-motion users instead of removing all animation. For animation patterns with `prefers-reduced-motion` support, see `references/patterns-animations.md`.
 
 ---
 
@@ -583,10 +456,12 @@ function trapFocus(element: HTMLElement): void {
 
 ### Preserve Order
 
-DOM order must match visual order. CSS properties that break this:
-- `order` in Flex/Grid
+DOM order must match visual order -- content must make sense without CSS. CSS properties that break this:
+- `order` in Flex/Grid (visual reorder for responsive layout is OK if DOM stays logical)
 - `flex-direction: row-reverse` / `column-reverse`
+- `tabindex` values > 0 to override tab order
 - `position: absolute` moving elements visually out of sequence
+- CSS `float` tricks that put content before its heading in the DOM
 
 ### Skip Links
 
@@ -618,11 +493,9 @@ ARIA creates relationships between elements using ID references:
 <!-- aria-describedby: element described BY another element -->
 <input type="email" aria-describedby="email-help">
 <p id="email-help">We'll never share your email.</p>
-
-<!-- aria-controls: element controls another element -->
-<button aria-expanded="false" aria-controls="panel-1">Toggle</button>
-<div id="panel-1" hidden>Panel content</div>
 ```
+
+`aria-controls` follows the same ID-reference pattern -- see `patterns-disclosure-widget.md` and `patterns-accessible-navigation.md` for real `aria-expanded`/`aria-controls` toggles.
 
 ### ARIA Rules
 
@@ -640,20 +513,16 @@ ARIA creates relationships between elements using ID references:
 
 <!-- Decorative image (empty alt is sufficient, role="presentation" is optional) -->
 <img src="..." alt="">
-
-<!-- Complex image (chart, infographic) -->
-<figure>
-    <img src="..." alt="Brief description" aria-describedby="desc-{uid}">
-    <figcaption id="desc-{uid}">Detailed description...</figcaption>
-</figure>
 ```
+
+Complex images (charts, infographics) need a longer description: pair a brief `alt` with a `<figcaption>` referenced via `aria-describedby`.
 
 ### Live Regions
 
 For dynamic content updates that screen readers should announce:
 
 ```html
-<!-- Polite: announced at next pause (filter results, status updates) -->
+<!-- Polite: announced at next pause (filter results, form/process status) -->
 <div aria-live="polite" aria-atomic="true">
     3 results found
 </div>
@@ -662,12 +531,9 @@ For dynamic content updates that screen readers should announce:
 <div role="alert">
     Session expires in 2 minutes
 </div>
-
-<!-- Status: polite announcement for form/process status -->
-<div role="status">
-    Form saved successfully
-</div>
 ```
+
+`role="status"` is shorthand for `aria-live="polite" aria-atomic="true"` -- use it for form/save confirmations.
 
 ---
 
@@ -695,23 +561,9 @@ for (const page of pages) {
 }
 ```
 
-Install: `npm install --save-dev @axe-core/playwright` in the root project.
+Install: `npm install --save-dev @axe-core/playwright` in the root project, and run it as part of the CI pipeline.
 
-### Browser DevTools Workflows
-
-**Accessibility Tree:**
-Chrome DevTools > Elements > Accessibility pane shows computed accessible name, role, and properties. Enable "Full accessibility tree" in DevTools settings for the tree view.
-
-**Debug Roles and Names:**
-Inspect element > Accessibility pane > "Computed Properties" shows resolved `role`, `name`, `description`. Common issue: missing accessible name on icon buttons or empty links.
-
-**Visualize Tab Order:**
-Chrome DevTools > Elements > Accessibility > check "Show tab order". Numbers overlay shows actual tab sequence -- verify it matches visual reading order.
-
-**Emulate Vision Deficiencies:**
-Chrome DevTools > Rendering > "Emulate vision deficiencies". Options: Protanopia, Deuteranopia, Tritanopia, Achromatopsia, Blurred vision. Also emulate: `prefers-reduced-motion`, `prefers-color-scheme`, `prefers-contrast`, `forced-colors`.
-
-**Custom Debugging Selectors:**
+### Custom Debugging Selectors
 
 ```css
 /* Find images without alt */
@@ -741,10 +593,6 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
     }
 }
 ```
-
-### CI Integration
-
-Add axe-core to the Playwright CI pipeline. Configure the accessibility test job in your CI pipeline.
 
 ---
 
