@@ -11,57 +11,16 @@ Cards and teasers often need to be entirely clickable while remaining accessible
 - Text within the card must remain selectable
 - Focus indicator must be visible
 
-## Solution 1: Wrapping Everything in `<a>` (NOT Recommended)
+## Rejected Alternatives
 
-```html
-<a href="/detail" class="ce-teaser">
-    <img src="image.jpg" alt="" class="ce-teaser__image">
-    <h3 class="ce-teaser__title">Card Title</h3>
-    <p class="ce-teaser__text">Description text that explains the card content.</p>
-</a>
-```
+Don't reach for these -- each looks like the obvious fix and each breaks a different requirement above:
 
-**Problems:** Screen readers read ALL content as one long link text -- extremely verbose and confusing. Cannot nest interactive elements (buttons, other links) inside an `<a>` element.
+- **Wrap everything in `<a>`** -- screen readers read all content as one long link, and interactive elements (buttons, nested links) can't go inside an `<a>`.
+- **Separate links per element** (image + heading + "Read more" all pointing to the same URL) -- creates 3 redundant tab stops for the same destination.
+- **Empty link overlay** (absolutely-positioned `<a>` with `aria-label` duplicating the heading) -- kills text selection everywhere on the card, and the label must be hand-kept in sync with the heading.
+- **JavaScript click delegation** (listen for clicks anywhere on the card, forward to the primary link) -- no URL preview on hover, no native right-click menu, and the card isn't clickable at all without JS.
 
-## Solution 2: Separate Links (NOT Recommended)
-
-```html
-<div class="ce-teaser">
-    <a href="/detail"><img src="image.jpg" alt="Card Title" class="ce-teaser__image"></a>
-    <h3 class="ce-teaser__title"><a href="/detail">Card Title</a></h3>
-    <p class="ce-teaser__text">Description text.</p>
-    <a href="/detail" class="btn btn-primary">Read more</a>
-</div>
-```
-
-**Problems:** Creates 3 tab stops all pointing to the same URL. Keyboard users must tab through redundant links. Screen readers announce the same destination multiple times.
-
-## Solution 3: Empty Link Overlay (Acceptable)
-
-```html
-<div class="ce-teaser">
-    <a href="/detail" class="ce-teaser__overlay" aria-label="Card Title"></a>
-    <img src="image.jpg" alt="" class="ce-teaser__image">
-    <h3 class="ce-teaser__title">Card Title</h3>
-    <p class="ce-teaser__text">Description text.</p>
-</div>
-```
-
-```scss
-.ce-teaser {
-    position: relative;
-
-    &__overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-    }
-}
-```
-
-**Problems:** Text selection does not work anywhere on the card. The `aria-label` must be kept in sync with the heading manually. Empty links are not ideal semantically.
-
-## Solution 4: Pseudo-Element Stretch (RECOMMENDED)
+## Recommended: Pseudo-Element Stretch
 
 The heading link gets a `::after` pseudo-element stretched over the entire card. This is the recommended default for all card/teaser components.
 
@@ -217,37 +176,6 @@ The heading link gets a `::after` pseudo-element stretched over the entire card.
 
 **Z-index layering explained:** The `::after` pseudo-element sits at `z-index: 1`, making the entire card clickable. Elements that should remain selectable (text, tags) get `position: relative; z-index: 2`, raising them above the overlay. The heading link itself stays at the default stacking level, so clicks on non-raised areas pass through to `::after`.
 
-## Solution 5: JavaScript Click Delegation (Acceptable)
-
-```typescript
-// Assets/JavaScript/Components/ClickableCard.ts
-
-export function initClickableCards(): void {
-    const cards = document.querySelectorAll<HTMLElement>('[data-clickable-card]');
-
-    cards.forEach((card) => {
-        const primaryLink = card.querySelector<HTMLAnchorElement>('a[data-card-link]');
-        if (!primaryLink) return;
-
-        card.style.cursor = 'pointer';
-
-        card.addEventListener('click', (event: MouseEvent) => {
-            // Do not hijack clicks on interactive elements
-            const target = event.target as HTMLElement;
-            if (target.closest('a, button, input, select, textarea')) return;
-
-            if (event.ctrlKey || event.metaKey) {
-                window.open(primaryLink.href, '_blank');
-            } else {
-                primaryLink.click();
-            }
-        });
-    });
-}
-```
-
-**Problems:** No URL preview on hover over the card body. No native right-click context menu with link options. Requires JavaScript -- card is not clickable without it.
-
 ## Labels
 
 ```xml
@@ -299,7 +227,7 @@ test.describe('Clickable Card (Pseudo-Element Pattern)', () => {
 
 ## Key Rules
 
-1. **Use Solution 4 (pseudo-element) as default** for all card/teaser components
+1. **Use the pseudo-element stretch pattern as default** for all card/teaser components
 2. **One link per card** -- screen readers should encounter exactly one link
 3. **Meaningful link text** -- heading text serves as the link label
 4. **Text selectability** -- raise non-link content above the overlay with `z-index: 2`
