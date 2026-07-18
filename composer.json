@@ -2,8 +2,11 @@
   "name": "netresearch/typo3-a11y-skill",
   "description": "WCAG 2.1 AA accessibility patterns for TYPO3 projects",
   "type": "ai-agent-skill",
-  "license": "MIT",
+  "license": "(MIT AND CC-BY-SA-4.0)",
   "require": {
     "netresearch/composer-agent-skill-plugin": "*"
+  },
+  "extra": {
+    "ai-agent-skill": "skills/typo3-a11y/SKILL.md"
   }
 }
