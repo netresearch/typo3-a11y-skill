@@ -1,0 +1,378 @@
+[
+  {
+    "name": "navigation-without-role-menu",
+    "prompt": "Write the Fluid template for the main navigation of a TYPO3 sitepackage. Top level with submenus, and the current page should be recognisable to screen readers.",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "<nav",
+        "description": "Uses the nav landmark as the wrapper"
+      },
+      {
+        "type": "content_regex",
+        "value": "role=\"list\"",
+        "description": "Keeps list semantics with role=\"list\", because list-style: none removes them in Safari with VoiceOver (WCAG 1.3.1)"
+      },
+      {
+        "type": "content_regex",
+        "value": "aria-current=\"page\"",
+        "description": "Marks the current page so screen readers announce it (WCAG 2.4.8)"
+      },
+      {
+        "type": "content_regex",
+        "value": "aria-expanded",
+        "description": "Announces submenu state on the toggle rather than leaving it silent"
+      }
+    ],
+    "samples": {
+      "passing": "<nav class=\"main-nav\" aria-label=\"Main navigation\"><ul class=\"main-nav__list\" role=\"list\"><li><a href=\"{item.link}\" aria-current=\"page\">{item.title}</a><button aria-expanded=\"false\" aria-controls=\"subnav-1\">Submenu</button><ul id=\"subnav-1\" role=\"list\"><li><a href=\"…\">…</a></li></ul></li></ul></nav>",
+      "failing": [
+        "<nav><ul role=\"menu\"><li role=\"menuitem\"><a href=\"{item.link}\">{item.title}</a></li></ul></nav> — the menu role tells assistive technology this is an application menu.",
+        "<div class=\"navigation\"><ul><li><a href=\"{item.link}\" class=\"active\">{item.title}</a></li></ul></div>"
+      ]
+    }
+  },
+  {
+    "name": "skip-links-first-focusable",
+    "prompt": "Add skip links to our TYPO3 sitepackage page layout.",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "(?i)first focusable|before .{0,30}(header|navigation)|top of|very first",
+        "description": "Places the skip links as the first focusable element, which is the whole point of the pattern"
+      },
+      {
+        "type": "content_regex",
+        "value": "#main-content|#main-navigation|#main-footer",
+        "description": "Targets real landmark ids rather than a single generic anchor"
+      },
+      {
+        "type": "content_regex",
+        "value": "f:translate|translate",
+        "description": "Translates the link labels instead of hardcoding one language"
+      }
+    ],
+    "samples": {
+      "passing": "Render the Skiplinks partial as the very first element inside <body>, before the header, so it is the first focusable element on the page. It links to #main-content, #main-navigation and #main-footer, and the labels come from <f:translate> so they follow the site language.",
+      "failing": [
+        "Put a link to #content in the footer with class visually-hidden; screen reader users will find it when they reach the end of the page.",
+        "Skip links are optional if the navigation is short — modern screen readers have landmark navigation anyway."
+      ]
+    }
+  },
+  {
+    "name": "never-disable-submit-button",
+    "prompt": "Our TYPO3 form has a submit button that we disable until every required field is filled. Is that a problem?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "(?i)(never|don't|do not|avoid) disabl",
+        "description": "Rejects the disabled-until-valid pattern"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(on click|on submit|validate)",
+        "description": "Replaces it with validation on submit"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(error|message|announce|focus)",
+        "description": "Requires a reachable error message rather than a silently blocked button"
+      }
+    ],
+    "samples": {
+      "passing": "Never disable the submit button. A disabled control is skipped by keyboard and gives no reason why nothing happens, so the user cannot tell what is missing. Keep it enabled, validate on click, and show error messages that are announced and can be focused.",
+      "failing": [
+        "That is fine and is standard practice — a disabled submit button prevents invalid submissions before they happen.",
+        "Add aria-disabled=\"true\" alongside the disabled attribute and it is accessible."
+      ]
+    }
+  },
+  {
+    "name": "viewport-allows-zoom",
+    "prompt": "Review this meta tag from our sitepackage: <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "user-scalable",
+        "description": "Names the offending attribute"
+      },
+      {
+        "type": "content_regex",
+        "value": "maximum-scale",
+        "description": "Names the second one, which blocks zoom on its own even after user-scalable is removed"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(zoom|magnif|1\\.4\\.4|low vision)",
+        "description": "Explains the failure: users who need magnification cannot zoom"
+      }
+    ],
+    "samples": {
+      "passing": "Remove both user-scalable=no and maximum-scale=1. Either one blocks pinch zoom, which fails WCAG 1.4.4 for anyone who needs magnification. Keep only width=device-width, initial-scale=1.",
+      "failing": [
+        "That is a normal mobile viewport tag; locking the scale prevents accidental zoom and keeps the layout stable.",
+        "Just drop user-scalable=no and keep maximum-scale=1 — that is enough."
+      ]
+    }
+  },
+  {
+    "name": "links-underlined-in-body-text",
+    "prompt": "Our designer wants links in body copy to be brand-coloured without underlines. The contrast between link colour and body text is 3.2:1. Is that acceptable?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "(?i)underlin",
+        "description": "Requires the underline, or another non-colour indicator"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)colour alone|color alone|not sufficient|only.{0,20}colou?r",
+        "description": "States the rule: colour alone does not identify a link"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(3:1|3 :1|contrast)",
+        "description": "Engages with the contrast figure rather than ignoring it"
+      }
+    ]
+  },
+  {
+    "name": "disclosure-widget-aria-expanded",
+    "prompt": "Build an accordion for a TYPO3 content element: a heading that expands a panel.",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "aria-expanded",
+        "description": "The trigger announces its state"
+      },
+      {
+        "type": "content_regex",
+        "value": "aria-controls",
+        "description": "The trigger names the panel it controls"
+      },
+      {
+        "type": "content_regex",
+        "value": "<button",
+        "description": "Uses a button, not a div or a link, because the trigger acts on the current page"
+      }
+    ]
+  },
+  {
+    "name": "clickable-card-pseudo-element-stretch",
+    "prompt": "We have teaser cards with a heading, text and a tag list. The whole card should be clickable. How do we build that accessibly?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "::after|pseudo",
+        "description": "Stretches a pseudo-element from the heading link over the card"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(do not|don't|never) wrap|not wrap the (whole|entire)",
+        "description": "Rejects wrapping the whole card in one anchor, which reads the entire content as a single link"
+      },
+      {
+        "type": "content_regex",
+        "value": "z-index",
+        "description": "Raises the elements that must stay selectable above the overlay"
+      }
+    ],
+    "samples": {
+      "passing": "Do not wrap the whole card in an <a>: a screen reader then reads heading, text and tags as one long link, and nested interactive elements are invalid. Put the link on the heading and stretch a ::after pseudo-element over the card, then give selectable text and the tag list position: relative and a higher z-index so they stay usable.",
+      "failing": [
+        "Wrap the entire card markup in an <a href> — that is the simplest way to make the whole area clickable.",
+        "Add an onclick handler to the card div and role=\"link\" so it behaves like a link."
+      ]
+    }
+  },
+  {
+    "name": "filter-results-announced-politely",
+    "prompt": "Our AJAX product filter updates the result list without a page reload. Screen reader users get no feedback. Fix it.",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "aria-live=\"polite\"|aria-live='polite'",
+        "description": "Announces the change politely"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(never|not|avoid).{0,30}assertive|assertive.{0,40}(intrusive|interrupt)",
+        "description": "Rules out assertive for filter results, which interrupts whatever is being read"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(count|number of|results?)",
+        "description": "Announces the result count, which is the information the sighted user gets from the list changing"
+      }
+    ],
+    "samples": {
+      "passing": "Add a visually hidden live region with aria-live=\"polite\" and aria-atomic=\"true\", and write the new result count into it after each update. Never use assertive here — filter updates would interrupt whatever the screen reader is currently reading.",
+      "failing": [
+        "Use aria-live=\"assertive\" on the results container so the change is announced immediately.",
+        "Set focus to the first result after every filter change."
+      ]
+    }
+  },
+  {
+    "name": "v14-native-dialog-modal",
+    "prompt": "We are on TYPO3 v14 and our sitepackage still uses the Bootstrap modal JavaScript for dialogs. What changed, and what do we get by moving?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "107443",
+        "description": "Cites the breaking change that migrated the core modal to the native element"
+      },
+      {
+        "type": "content_regex",
+        "value": "<dialog|showModal|native dialog",
+        "description": "Names the native dialog element as the replacement"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)focus trap|Esc|escape",
+        "description": "Names the a11y behaviour the platform then provides for free"
+      }
+    ]
+  },
+  {
+    "name": "reduced-motion-respected",
+    "prompt": "Add scroll-triggered fade-in animations to our TYPO3 content elements.",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "prefers-reduced-motion",
+        "description": "Honours the reduced-motion preference"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(IntersectionObserver|observer)",
+        "description": "Uses IntersectionObserver rather than a scroll handler on every frame"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(visible|content|still|without)",
+        "description": "Keeps the content visible when animations are suppressed, instead of leaving it stuck at opacity 0"
+      }
+    ],
+    "samples": {
+      "passing": "Reveal with an IntersectionObserver, and wrap the transition in a @media (prefers-reduced-motion: no-preference) block. Under reduced motion the elements must be visible without the animation — a fade that never runs must not leave the content at opacity: 0.",
+      "failing": [
+        "Add a scroll listener that adds .is-visible when the element enters the viewport and transition opacity from 0 to 1.",
+        "Use a CSS animation with a delay per element; reduced motion is a browser setting and handled automatically."
+      ]
+    }
+  },
+  {
+    "name": "focus-visible-not-outline-none",
+    "prompt": "The focus outlines clash with our design. Our CSS currently has *:focus { outline: none; }. What should we do instead?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": ":focus-visible",
+        "description": "Styles focus-visible instead of removing the indicator"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(never|don't|do not|remove).{0,40}outline|outline: ?none",
+        "description": "Rejects removing the indicator outright"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(contrast|3:1|visible)",
+        "description": "Requires the replacement indicator to be perceivable rather than merely present"
+      }
+    ]
+  },
+  {
+    "name": "styled-list-keeps-role-list",
+    "prompt": "We remove bullets from several lists with list-style: none in our sitepackage SCSS. Any accessibility impact?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "role=\"list\"|role='list'",
+        "description": "Restores the semantics explicitly"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(safari|voiceover)",
+        "description": "Names where the semantics are actually lost, rather than describing it as a universal browser behaviour"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(semantic|list semantics|1\\.3\\.1|announce)",
+        "description": "Explains what is lost: the list is no longer announced as a list"
+      }
+    ]
+  },
+  {
+    "name": "language-switcher-lang-attributes",
+    "prompt": "Build a language switcher for a TYPO3 site with German, English and French.",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "hreflang",
+        "description": "Marks the target language of each link"
+      },
+      {
+        "type": "content_regex",
+        "value": "lang=",
+        "description": "Sets lang on the label so the language name is pronounced in its own language"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(flag|not.{0,20}flag|language name)",
+        "description": "Uses the language name rather than a flag alone, which denotes a country and not a language"
+      }
+    ]
+  },
+  {
+    "name": "heading-hierarchy-not-visual-size",
+    "prompt": "Our content element renders its title as an h4 because the designer wanted smaller text, though it is the first heading below the page h1. Fine?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "(?i)(h2|next level|hierarch|skip)",
+        "description": "Corrects the level to follow the document outline"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(css|class|style|font-size)",
+        "description": "Moves the visual size into CSS instead of into the heading level"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(outline|navigat|screen reader|structure)",
+        "description": "Explains why: the heading level is the document structure screen reader users navigate by"
+      }
+    ],
+    "samples": {
+      "passing": "Use h2 — it is the first heading below the h1, and levels must not be skipped because screen reader users navigate the document by them. Make it visually smaller with a class, not by choosing a lower level.",
+      "failing": [
+        "Yes, that is fine — heading levels are a styling choice and h4 matches the intended size.",
+        "Use a <p> with a bold class instead, then no heading level is wrong."
+      ]
+    }
+  },
+  {
+    "name": "contrast-thresholds-text-and-ui",
+    "prompt": "Which contrast ratios do we have to meet for WCAG 2.1 AA in a TYPO3 sitepackage — body text, large headings, and the border of an input field?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "4\\.5",
+        "description": "4.5:1 for body text"
+      },
+      {
+        "type": "content_regex",
+        "value": "3(:|\\.0:)1|3:1",
+        "description": "3:1 for large text and for UI components such as an input border"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(large|18|14|bold)",
+        "description": "Defines what counts as large text rather than leaving the threshold unusable"
+      }
+    ]
+  }
+]
