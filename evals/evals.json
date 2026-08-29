@@ -376,6 +376,27 @@
     ]
   },
   {
+    "name": "hover-states-need-their-own-measurement",
+    "prompt": "We run axe-core against every page in CI and it is green. Is our colour contrast covered?",
+    "assertions": [
+      {
+        "type": "content_regex",
+        "value": "(?i):?(hover|focus)",
+        "description": "Names the interactive states axe does not measure"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(at rest|resting|static|only.{0,30}(the )?page)",
+        "description": "Says what a resting-page audit does and does not cover"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(forcePseudoState|force.{0,20}(the )?(pseudo|state)|devtools protocol|cdp)",
+        "description": "Points at forcing the state rather than assuming it is covered"
+      }
+    ]
+  },
+  {
     "name": "apca-does-not-waive-wcag",
     "prompt": "Our brand turquoise button (white 16px/600 text on #2F99A4) is 3.38:1, but it scores fine in APCA. Can we ship it and cite APCA?",
     "assertions": [

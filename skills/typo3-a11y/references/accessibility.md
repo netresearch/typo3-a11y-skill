@@ -28,7 +28,7 @@ two-way voice or video) that WCAG does not address.
 7. [CSS Units and User Preferences](#css-units-and-user-preferences) -- WCAG 1.4.4
 8. [Focus Management](#focus-management) -- WCAG 2.4.7, 2.4.3, 2.1.2
 9. [ARIA Reference](#aria-reference) -- WCAG 4.1.2
-10. [Automated Accessibility Testing](#automated-accessibility-testing)
+10. [Automated Accessibility Testing](#automated-accessibility-testing) -- incl. hover/focus states
 11. [WCAG 2.2 Additions](#wcag-22-additions) -- WCAG 2.4.11, 2.5.7, 2.5.8, 3.2.6, 3.3.7, 3.3.8
 12. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
 13. [Content Element Checklist](#content-element-checklist)
@@ -632,6 +632,52 @@ button:empty:not([aria-label]):not([aria-labelledby]) { outline: 0.25rem solid r
 /* Find missing lang attribute */
 html:not([lang]) { outline: 0.25rem solid red !important; }
 ```
+
+### Interactive states are not covered by any of the above
+
+axe, a static CSS checker and a screenshot all measure the page at rest. A hover,
+focus or active colour is a different set of pairs, it is where a generic rule
+quietly repaints something it was never meant to touch, and nothing above will
+ever look at it. Three real AA failures found this way in one sitepackage, none
+of them visible to a resting-page audit: a skip link at 1.77:1 because `a:hover`
+overrode its own white label, CTA buttons at 1.13:1 for the same reason (a button
+is usually an anchor), and white hero text at 2.00:1 in dark mode because the
+gradient's second stop borrowed a text token, which lifts on a dark surface.
+
+Force the states through the Chrome DevTools Protocol and measure the resolved
+cascade:
+
+```javascript
+const cdp = await page.context().newCDPSession(page);
+await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
+
+// A transition makes getComputedStyle return the value from BEFORE the change,
+// so a probe reports "nothing changed" and passes everything. Kill them first.
+await page.addStyleTag({ content: '*,*::before,*::after{transition:none !important;animation:none !important}' });
+
+const { root } = await cdp.send('DOM.getDocument', { depth: -1 });
+const { nodeIds } = await cdp.send('DOM.querySelectorAll', {
+    nodeId: root.nodeId,
+    selector: 'a, button, input, textarea, select, summary, [tabindex]',
+});
+
+for (const state of ['hover', 'focus-visible']) {
+    for (const nodeId of nodeIds) {
+        await cdp.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [state] });
+    }
+    // …measure contrast here, then reset with forcedPseudoClasses: []
+}
+```
+
+Two rules that decide whether the result means anything:
+
+- **Force the pseudo-state; do not apply the rule's declarations inline.** An
+  inline style beats more specific rules, so `a:hover` gets applied to a footer
+  link that `.footer a:hover` actually governs, and the probe invents failures
+  that do not exist.
+- **Make the probe prove it can move something.** Read one known colour before
+  and after forcing, and report that alongside the result. A run that finds
+  nothing because it changed nothing looks exactly like a clean run.
 
 ### Linter Rules
 
