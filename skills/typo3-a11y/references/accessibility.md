@@ -5,9 +5,10 @@ WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code.
 Where EN 301 549 conformance is contractually required: as of August 2026 the
 harmonised version cited in the EU Official Journal is still
 [v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf)
-(cited 2021-08-12), which references WCAG 2.1 AA. Version 4.1.1 adopts WCAG 2.2
-AA but is still an approval draft and is not cited yet; publication is expected
-around late 2026.
+(cited 2021-08-12), which references WCAG 2.1 AA. Version 4.1.x adopts WCAG 2.2
+AA and has cleared its approval vote, but it is not the cited version yet;
+citation in the Official Journal is expected around late 2026. Check the current
+citation before promising conformance to a particular version.
 
 Building to WCAG 2.2 covers the WCAG part of both versions: everything in 2.1 is
 also in 2.2, and the one criterion 2.2 dropped (4.1.1 Parsing) is treated as
