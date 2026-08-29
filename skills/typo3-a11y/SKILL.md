@@ -5,7 +5,7 @@ description: "Use when building accessible navigation, forms, filters, tables, s
 
 # TYPO3 Accessibility Skill
 
-WCAG 2.2 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development. EN 301 549 still references 2.1 AA; 2.2 only drops 4.1.1 Parsing.
+WCAG 2.2 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development. EN 301 549 still references 2.1 AA; building to 2.2 satisfies both.
 
 **v14 a11y wins** (use as reference):
 

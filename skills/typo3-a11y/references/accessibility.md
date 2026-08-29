@@ -1,10 +1,16 @@
 # Accessibility Standards
 
-WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code. Where
-EN 301 549 conformance is contractually required, WCAG 2.1 AA remains the
-referenced legal baseline. The two differ in exactly one place: 2.2 dropped
-4.1.1 Parsing, so a 2.1 obligation can still carry that check — see "WCAG 2.2
-Additions" below. Everything else in 2.1 is also in 2.2.
+WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code.
+
+Where EN 301 549 conformance is contractually required, the harmonised version
+cited in the EU Official Journal today is still
+[v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf),
+which references WCAG 2.1 AA — so 2.1 remains the legal yardstick for now.
+Version 4.1.1
+adopts WCAG 2.2 AA and is expected to be cited around late 2026. Building to 2.2
+satisfies both: everything in 2.1 is also in 2.2, and the one criterion 2.2
+dropped (4.1.1 Parsing) is treated as always satisfied in 2.1 as well — see
+"WCAG 2.2 Additions" below.
 
 ## Table of Contents
 
@@ -304,9 +310,10 @@ Contrast evaluation answers two independent questions. Keep them apart:
    single "Lc 60 is fine" value.
 
 **An APCA pass MUST NOT waive a WCAG failure** where WCAG or EN conformance is
-required. APCA is not a normative standard: the WCAG 3 working draft of
-2026-03-03 names no contrast algorithm at all, so "APCA will be the WCAG 3
-algorithm" is not a claim to build a policy on.
+required. APCA is not a normative standard: the
+[WCAG 3 working draft of 2026-03-03](https://www.w3.org/TR/wcag-3.0/) names no
+contrast algorithm, so "APCA will be the WCAG 3 algorithm" is not a claim to
+build a policy on.
 
 Two things that are commonly said about this and are wrong:
 
@@ -640,10 +647,9 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
 
 ## WCAG 2.2 Additions
 
-These success criteria new in WCAG 2.2 affect sitepackage frontend code
-directly:
-
-The table states each criterion in the short form you need while writing code.
+These success criteria are new in WCAG 2.2 and affect sitepackage frontend code
+directly. The table states each criterion in the short form you need while
+writing code.
 Every one of them carries exceptions that decide real cases, and those live in
 the linked normative text — read it before calling something a failure.
 
@@ -664,12 +670,13 @@ non-target text), **Equivalent** (the same function is reachable through a
 conforming control on the page), **User Agent Control** (the size is the user
 agent's and the author does not modify it) and **Essential**.
 
-4.1.1 Parsing was **removed** in 2.2 — duplicate `id` values are still a bug,
-but no longer a conformance failure on their own. It is the one point where 2.2
-is not simply a superset of 2.1: a contract that names WCAG 2.1 literally can
-still require the parsing check, so keep IDs unique regardless (W3C has since
-issued an erratum treating 4.1.1 as always satisfied in 2.1 as well, but do not
-argue the point with an auditor over a duplicate `id`).
+4.1.1 Parsing is the only criterion 2.2 **removed**, and it is not a gap when
+working to a 2.1 obligation: the WCAG 2.0 and 2.1 errata carry the same note,
+"[This Success Criteria should be considered as always satisfied for any content
+using HTML or XML](https://www.w3.org/WAI/standards-guidelines/wcag/faq/)". So
+duplicate `id` values no longer fail on their own under any current version —
+keep them unique anyway, because what used to fail here now fails 1.3.1 or
+4.1.2 instead.
 
 ## Responsive Accessibility
 
