@@ -370,7 +370,7 @@
       },
       {
         "type": "content_regex",
-        "value": "24|18\\.66",
+        "value": "(?i)(24\\s*(css\\s*)?px|18\\.66)",
         "description": "Names the real large-text threshold (24 CSS px, or 18.66 px bold) rather than the widespread wrong 18px"
       }
     ]
@@ -386,7 +386,7 @@
       },
       {
         "type": "content_regex",
-        "value": "(?i)(not.{0,30}waive|does not replace|nicht ersetz|still fails|not a substitute|no substitute)",
+        "value": "(?i)(not.{0,30}(waive|override|supersede|replace)|cannot.{0,30}(waive|override|supersede|replace)|does not replace|nicht ersetz|still fails|not a substitute|no substitute)",
         "description": "Says an APCA pass does not waive the WCAG failure"
       },
       {

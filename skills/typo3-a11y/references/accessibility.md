@@ -2,7 +2,9 @@
 
 WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code. Where
 EN 301 549 conformance is contractually required, WCAG 2.1 AA remains the
-referenced legal baseline — 2.2 is a superset, so meeting 2.2 also meets 2.1.
+referenced legal baseline. The two differ in exactly one place: 2.2 dropped
+4.1.1 Parsing, so a 2.1 obligation can still carry that check — see "WCAG 2.2
+Additions" below. Everything else in 2.1 is also in 2.2.
 
 ## Table of Contents
 
@@ -16,7 +18,7 @@ referenced legal baseline — 2.2 is a superset, so meeting 2.2 also meets 2.1.
 8. [Focus Management](#focus-management) -- WCAG 2.4.7, 2.4.3, 2.1.2
 9. [ARIA Reference](#aria-reference) -- WCAG 4.1.2
 10. [Automated Accessibility Testing](#automated-accessibility-testing)
-11. [WCAG 2.2 Additions](#wcag-22-additions) -- WCAG 2.4.11, 2.5.8, 3.3.8
+11. [WCAG 2.2 Additions](#wcag-22-additions) -- WCAG 2.4.11, 2.5.7, 2.5.8, 3.2.6, 3.3.7, 3.3.8
 12. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
 13. [Content Element Checklist](#content-element-checklist)
 
@@ -638,18 +640,32 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
 
 ## WCAG 2.2 Additions
 
-Three success criteria new in WCAG 2.2 affect sitepackage frontend code
+These success criteria new in WCAG 2.2 affect sitepackage frontend code
 directly:
 
 | SC | Level | What it requires |
 |---|---|---|
 | 2.4.11 Focus Not Obscured (Minimum) | AA | A focused element must not be entirely hidden by author content. A sticky header is the usual offender — see `patterns-sticky-header.md` and `scroll-padding-top`. |
-| 2.5.8 Target Size (Minimum) | AA | Interactive targets are at least 24x24 CSS px, unless spaced or inline in a sentence. |
+| 2.5.7 Dragging Movements | AA | Anything operated by dragging (sliders, reorderable lists, map panning) also works with a single pointer without dragging. |
+| 2.5.8 Target Size (Minimum) | AA | Pointer targets are at least 24x24 CSS px. |
+| 3.2.6 Consistent Help | A | Help mechanisms repeated across pages appear in the same relative order. |
+| 3.3.7 Redundant Entry | A | Do not ask for the same information twice in one process — auto-populate it or offer it for selection. |
 | 3.3.8 Accessible Authentication (Minimum) | AA | No cognitive-function test (puzzle, transcription, memorisation) in a login step without an alternative. Do not block paste into password fields. |
 
-Also new at AA: 3.2.6 Consistent Help. 4.1.1 Parsing was **removed** in 2.2 —
-duplicate `id` values are still a bug, but no longer a conformance failure on
-their own.
+SC 2.5.8 has five exceptions, and only the first two are common in a
+sitepackage: **Spacing** (a 24px circle centred on each undersized target's
+bounding box does not intersect another target's), **Inline** (the target sits
+in a sentence, or its size is constrained by the line-height of surrounding
+non-target text), **Equivalent** (the same function is reachable through a
+conforming control on the page), **User Agent Control** (the size is the user
+agent's and the author does not modify it) and **Essential**.
+
+4.1.1 Parsing was **removed** in 2.2 — duplicate `id` values are still a bug,
+but no longer a conformance failure on their own. It is the one point where 2.2
+is not simply a superset of 2.1: a contract that names WCAG 2.1 literally can
+still require the parsing check, so keep IDs unique regardless (W3C has since
+issued an erratum treating 4.1.1 as always satisfied in 2.1 as well, but do not
+argue the point with an auditor over a duplicate `id`).
 
 ## Responsive Accessibility
 
