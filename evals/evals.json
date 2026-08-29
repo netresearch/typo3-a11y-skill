@@ -386,7 +386,7 @@
       },
       {
         "type": "content_regex",
-        "value": "(?i)(not.{0,30}(waive|override|supersede|replace)|cannot.{0,30}(waive|override|supersede|replace)|does not replace|nicht ersetz|still fails|not a substitute|no substitute)",
+        "value": "(?i)APCA[^.]{0,90}?(cannot|can't|does not|doesn't|never|is no|is not a)[^.]{0,50}?(waive|override|supersede|replace|substitute|excuse)",
         "description": "Says an APCA pass does not waive the WCAG failure"
       },
       {

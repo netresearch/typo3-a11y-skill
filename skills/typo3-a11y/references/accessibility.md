@@ -643,16 +643,20 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
 These success criteria new in WCAG 2.2 affect sitepackage frontend code
 directly:
 
+The table states each criterion in the short form you need while writing code.
+Every one of them carries exceptions that decide real cases, and those live in
+the linked normative text — read it before calling something a failure.
+
 | SC | Level | What it requires |
 |---|---|---|
-| 2.4.11 Focus Not Obscured (Minimum) | AA | A focused element must not be entirely hidden by author content. A sticky header is the usual offender — see `patterns-sticky-header.md` and `scroll-padding-top`. |
-| 2.5.7 Dragging Movements | AA | Anything operated by dragging (sliders, reorderable lists, map panning) also works with a single pointer without dragging. |
-| 2.5.8 Target Size (Minimum) | AA | Pointer targets are at least 24x24 CSS px. |
-| 3.2.6 Consistent Help | A | Help mechanisms repeated across pages appear in the same relative order. |
-| 3.3.7 Redundant Entry | A | Do not ask for the same information twice in one process — auto-populate it or offer it for selection. |
-| 3.3.8 Accessible Authentication (Minimum) | AA | No cognitive-function test (puzzle, transcription, memorisation) in a login step without an alternative. Do not block paste into password fields. |
+| [2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html) | AA | A focused element must not be entirely hidden by author content. A sticky header is the usual offender — see `patterns-sticky-header.md` and `scroll-padding-top`. |
+| [2.5.7 Dragging Movements](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html) | AA | Anything operated by dragging (sliders, reorderable lists, map panning) also works with a single pointer without dragging — unless the dragging is **essential**, or the behaviour is the **user agent's** and unmodified by the author (scrollbars, touch scrolling). |
+| [2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) | AA | Pointer targets are at least 24x24 CSS px, with five exceptions (below). |
+| [3.2.6 Consistent Help](https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html) | A | Help mechanisms repeated across pages appear in the same relative order. |
+| [3.3.7 Redundant Entry](https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html) | A | Do not ask for the same information twice in one process — auto-populate it or offer it for selection. |
+| [3.3.8 Accessible Authentication (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html) | AA | No cognitive-function test (puzzle, transcription, memorisation) in an authentication step, unless that step offers an **Alternative** method without one, a **Mechanism** that assists in completing it, or the test is **Object Recognition** or **Personal Content** the user supplied. Do not block paste into password fields. |
 
-SC 2.5.8 has five exceptions, and only the first two are common in a
+SC 2.5.8's five exceptions, of which only the first two come up in a
 sitepackage: **Spacing** (a 24px circle centred on each undersized target's
 bounding box does not intersect another target's), **Inline** (the target sits
 in a sentence, or its size is constrained by the line-height of surrounding
