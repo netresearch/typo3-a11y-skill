@@ -663,9 +663,18 @@ const { nodeIds } = await cdp.send('DOM.querySelectorAll', {
 
 for (const state of ['hover', 'focus-visible']) {
     for (const nodeId of nodeIds) {
+        // One element at a time. Forcing the whole set at once produces a state a
+        // user can never reach — every control hovered simultaneously — and any
+        // ancestor, sibling or :has() selector then resolves against that fiction.
         await cdp.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [state] });
+        try {
+            // …measure this one element's contrast here
+        } finally {
+            // Always reset, or the forced state leaks into every later measurement
+            // and into the screenshots taken afterwards.
+            await cdp.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [] });
+        }
     }
-    // …measure contrast here, then reset with forcedPseudoClasses: []
 }
 ```
 
@@ -675,6 +684,10 @@ Two rules that decide whether the result means anything:
   inline style beats more specific rules, so `a:hover` gets applied to a footer
   link that `.footer a:hover` actually governs, and the probe invents failures
   that do not exist.
+- **One element at a time, and always reset.** Forcing every control at once is a
+  state no user can reach, and a `:has()`, sibling or ancestor selector will
+  resolve against it; a forced state left behind then contaminates everything
+  measured after it.
 - **Make the probe prove it can move something.** Read one known colour before
   and after forcing, and report that alongside the result. A run that finds
   nothing because it changed nothing looks exactly like a clean run.

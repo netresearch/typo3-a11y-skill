@@ -386,8 +386,8 @@
       },
       {
         "type": "content_regex",
-        "value": "(?i)(at rest|resting|static|only.{0,30}(the )?page)",
-        "description": "Says what a resting-page audit does and does not cover"
+        "value": "(?i)(axe|it|that|the (audit|run|check))[^.]{0,80}?(does not|doesn't|never|cannot|can't|won't|no)[^.]{0,60}?(hover|focus|state)|(hover|focus|state)[^.]{0,80}?(are|is|remain)[^.]{0,40}?(not (covered|measured|checked)|unmeasured|invisible)",
+        "description": "States the negative relationship — a resting-page audit does NOT cover the interactive states — rather than merely mentioning both"
       },
       {
         "type": "content_regex",
