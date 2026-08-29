@@ -1,6 +1,6 @@
 # typo3-a11y-skill
 
-WCAG 2.1 AA accessibility patterns for TYPO3 v13+ sitepackage frontend development. A Claude Code skill that provides comprehensive accessibility guidelines, HTML/ARIA patterns, SCSS examples, and TypeScript implementations.
+WCAG 2.2 AA accessibility patterns for TYPO3 v13+ sitepackage frontend development. A Claude Code skill that provides comprehensive accessibility guidelines, HTML/ARIA patterns, SCSS examples, and TypeScript implementations.
 
 ## Installation
 
@@ -20,7 +20,7 @@ composer require netresearch/typo3-a11y-skill
 
 | File | Description |
 |---|---|
-| `accessibility.md` | WCAG 2.1 AA comprehensive guide -- language, landmarks, headings, links, buttons, color, focus, ARIA, testing |
+| `accessibility.md` | WCAG 2.2 AA comprehensive guide -- language, landmarks, headings, links, buttons, color, focus, ARIA, testing |
 | `patterns-skiplinks.md` | Mandatory skip link navigation with Fluid, SCSS, and Playwright tests |
 | `patterns-accessible-navigation.md` | Main navigation, submenus, mobile toggle with b13/menus TreeMenu |
 | `patterns-accessible-forms.md` | Form labels, error handling, fieldsets, multi-step forms |

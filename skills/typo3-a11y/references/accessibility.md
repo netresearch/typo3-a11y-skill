@@ -1,6 +1,8 @@
 # Accessibility Standards
 
-WCAG 2.1 Level AA compliance for TYPO3 sitepackage frontend code.
+WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code. Where
+EN 301 549 conformance is contractually required, WCAG 2.1 AA remains the
+referenced legal baseline — 2.2 is a superset, so meeting 2.2 also meets 2.1.
 
 ## Table of Contents
 
@@ -14,8 +16,9 @@ WCAG 2.1 Level AA compliance for TYPO3 sitepackage frontend code.
 8. [Focus Management](#focus-management) -- WCAG 2.4.7, 2.4.3, 2.1.2
 9. [ARIA Reference](#aria-reference) -- WCAG 4.1.2
 10. [Automated Accessibility Testing](#automated-accessibility-testing)
-11. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
-12. [Content Element Checklist](#content-element-checklist)
+11. [WCAG 2.2 Additions](#wcag-22-additions) -- WCAG 2.4.11, 2.5.8, 3.3.8
+12. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
+13. [Content Element Checklist](#content-element-checklist)
 
 Cross-references to dedicated pattern files:
 - `patterns-skiplinks.md` -- Skip link navigation
@@ -277,15 +280,52 @@ Instead: keep the button enabled, validate on click, and show error messages:
 
 | Element | Ratio |
 |---|---|
-| Normal text (<24px / <19px bold) | 4.5:1 |
-| Large text (>=24px / >=19px bold) | 3:1 |
+| Normal text (<24px, or <18.66px bold) | 4.5:1 |
+| Large text (>=24px, or >=18.66px bold) | 3:1 |
 | UI components (borders, icons, focus indicators) | 3:1 |
+
+The large-text threshold is 18pt / 14pt bold, which is **24 CSS px and
+18.66 CSS px** — not 18px. A 16px/600 button label is normal text and needs
+4.5:1, which is where most brand palettes fail.
+
+### Two goals, not one
+
+Contrast evaluation answers two independent questions. Keep them apart:
+
+1. **Compliance.** Every text-bearing combination MUST meet WCAG 2.2 AA. Where
+   EN 301 549 applies, WCAG 2.1 AA is the referenced baseline; its contrast
+   requirements are identical.
+2. **Perceptual readability.** APCA (the Accessible Perceptual Contrast
+   Algorithm) SHOULD additionally be measured for saturated colours, dark mode,
+   light-on-dark text, borderline WCAG pairs and small or thin typography. Its
+   Lc thresholds are read against the actual font size and weight — there is no
+   single "Lc 60 is fine" value.
+
+**An APCA pass MUST NOT waive a WCAG failure** where WCAG or EN conformance is
+required. APCA is not a normative standard: the WCAG 3 working draft of
+2026-03-03 names no contrast algorithm at all, so "APCA will be the WCAG 3
+algorithm" is not a claim to build a policy on.
+
+Two things that are commonly said about this and are wrong:
+
+- *"WCAG tracks blue poorly because its blue coefficient is only 0.0722."* The
+  coefficients model human luminance perception, and APCA uses the same ones
+  (0.2126 / 0.7152 / 0.0722). APCA differs in the transfer curve, in treating
+  light-on-dark and dark-on-light asymmetrically, in its handling of very dark
+  colours, and in factoring in font size and weight — not in the coefficients.
+- *"Use your own eyeballs."* Personal visual preference is not an accessibility
+  test. A developer with typical vision is not the population whose borderline
+  cases are being judged. Measure WCAG, measure APCA in addition, and where a
+  case stays contentious, test with affected users.
 
 Rules:
 - Never convey information through color alone -- always add icons, patterns, underlines, or text
 - Test all Bootstrap theme color combinations against their backgrounds
 - Test with Chrome DevTools color contrast tools and emulated color deficiencies
-- The current WCAG contrast formula has known limitations -- use judgment alongside the numbers
+- Measure the **rendered** page, not the stylesheet: a translucent colour has no
+  ratio of its own, and an element over a gradient has no `backgroundColor` to
+  read. Run axe-core against the built output, in a real browser, in both colour
+  schemes.
 
 ```scss
 // Verify these combinations in your theme:
@@ -596,11 +636,27 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
 
 ---
 
+## WCAG 2.2 Additions
+
+Three success criteria new in WCAG 2.2 affect sitepackage frontend code
+directly:
+
+| SC | Level | What it requires |
+|---|---|---|
+| 2.4.11 Focus Not Obscured (Minimum) | AA | A focused element must not be entirely hidden by author content. A sticky header is the usual offender — see `patterns-sticky-header.md` and `scroll-padding-top`. |
+| 2.5.8 Target Size (Minimum) | AA | Interactive targets are at least 24x24 CSS px, unless spaced or inline in a sentence. |
+| 3.3.8 Accessible Authentication (Minimum) | AA | No cognitive-function test (puzzle, transcription, memorisation) in a login step without an alternative. Do not block paste into password fields. |
+
+Also new at AA: 3.2.6 Consistent Help. 4.1.1 Parsing was **removed** in 2.2 —
+duplicate `id` values are still a bug, but no longer a conformance failure on
+their own.
+
 ## Responsive Accessibility
 
 ### Touch Targets
 
-Minimum 44x44px for all interactive elements on mobile (WCAG 2.5.8):
+WCAG 2.2 SC 2.5.8 (Target Size, Minimum) requires 24x24 CSS px at AA; 44x44 is
+the AAA target of SC 2.5.5 and the sensible default for touch:
 
 ```scss
 @media (pointer: coarse) {
@@ -635,7 +691,7 @@ For every new content element, verify:
 - [ ] Interactive elements are keyboard-accessible
 - [ ] ARIA attributes are correct and complete
 - [ ] `aria-expanded` toggles on disclosure triggers
-- [ ] Color contrast meets WCAG AA (4.5:1 text, 3:1 UI)
+- [ ] Color contrast meets WCAG AA (4.5:1 normal text, 3:1 large text >=24px / >=18.66px bold, 3:1 UI), measured on the rendered page
 - [ ] Information is not conveyed by color alone
 - [ ] Focus order follows visual/DOM order
 - [ ] Focus indicator is visible (3:1 contrast)

@@ -1,6 +1,6 @@
 # typo3-a11y-skill
 
-WCAG 2.1 AA accessibility patterns for TYPO3 v13/v14 LTS sitepackage frontend development, distributed as a Claude Code skill.
+WCAG 2.2 AA accessibility patterns for TYPO3 v13/v14 LTS sitepackage frontend development, distributed as a Claude Code skill.
 
 ## Repo Structure
 

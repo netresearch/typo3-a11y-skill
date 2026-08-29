@@ -1,6 +1,6 @@
 {
   "name": "netresearch/typo3-a11y-skill",
-  "description": "WCAG 2.1 AA accessibility patterns for TYPO3 projects",
+  "description": "WCAG 2.2 AA accessibility patterns for TYPO3 projects",
   "type": "ai-agent-skill",
   "license": "(MIT AND CC-BY-SA-4.0)",
   "require": {
