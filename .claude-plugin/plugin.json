@@ -1,7 +1,7 @@
 {
   "name": "typo3-a11y",
   "version": "1.5.0",
-  "description": "WCAG 2.1 AA accessibility patterns for TYPO3 projects",
+  "description": "WCAG 2.2 AA accessibility patterns for TYPO3 projects",
   "author": {
     "name": "Netresearch DTT GmbH",
     "url": "https://www.netresearch.de"

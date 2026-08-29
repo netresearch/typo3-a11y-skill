@@ -1,6 +1,21 @@
 # Accessibility Standards
 
-WCAG 2.1 Level AA compliance for TYPO3 sitepackage frontend code.
+WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code.
+
+Where EN 301 549 conformance is contractually required: as of August 2026 the
+harmonised version cited in the EU Official Journal is still
+[v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf)
+(cited 2021-08-12), which references WCAG 2.1 AA. Version 4.1.x adopts WCAG 2.2
+AA and has cleared its approval vote, but it is not the cited version yet;
+citation in the Official Journal is expected around late 2026. Check the current
+citation before promising conformance to a particular version.
+
+Building to WCAG 2.2 covers the WCAG part of both versions: everything in 2.1 is
+also in 2.2, and the one criterion 2.2 dropped (4.1.1 Parsing) is treated as
+always satisfied in 2.1 as well — see "WCAG 2.2 Additions" below. It is **not**
+full EN 301 549 conformance on its own: the standard carries further clauses
+(non-web documents and software, hardware, support documentation, ICT with
+two-way voice or video) that WCAG does not address.
 
 ## Table of Contents
 
@@ -14,8 +29,9 @@ WCAG 2.1 Level AA compliance for TYPO3 sitepackage frontend code.
 8. [Focus Management](#focus-management) -- WCAG 2.4.7, 2.4.3, 2.1.2
 9. [ARIA Reference](#aria-reference) -- WCAG 4.1.2
 10. [Automated Accessibility Testing](#automated-accessibility-testing)
-11. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
-12. [Content Element Checklist](#content-element-checklist)
+11. [WCAG 2.2 Additions](#wcag-22-additions) -- WCAG 2.4.11, 2.5.7, 2.5.8, 3.2.6, 3.3.7, 3.3.8
+12. [Responsive Accessibility](#responsive-accessibility) -- WCAG 2.5.8
+13. [Content Element Checklist](#content-element-checklist)
 
 Cross-references to dedicated pattern files:
 - `patterns-skiplinks.md` -- Skip link navigation
@@ -277,15 +293,53 @@ Instead: keep the button enabled, validate on click, and show error messages:
 
 | Element | Ratio |
 |---|---|
-| Normal text (<24px / <19px bold) | 4.5:1 |
-| Large text (>=24px / >=19px bold) | 3:1 |
+| Normal text (<24px, or <18.66px bold) | 4.5:1 |
+| Large text (>=24px, or >=18.66px bold) | 3:1 |
 | UI components (borders, icons, focus indicators) | 3:1 |
+
+The large-text threshold is 18pt / 14pt bold, which is **24 CSS px and
+18.66 CSS px** — not 18px. A 16px/600 button label is normal text and needs
+4.5:1, which is where most brand palettes fail.
+
+### Two goals, not one
+
+Contrast evaluation answers two independent questions. Keep them apart:
+
+1. **Compliance.** Every text-bearing combination MUST meet WCAG 2.2 AA. Where
+   EN 301 549 applies, WCAG 2.1 AA is the referenced baseline; its contrast
+   requirements are identical.
+2. **Perceptual readability.** APCA (the Accessible Perceptual Contrast
+   Algorithm) SHOULD additionally be measured for saturated colours, dark mode,
+   light-on-dark text, borderline WCAG pairs and small or thin typography. Its
+   Lc thresholds are read against the actual font size and weight — there is no
+   single "Lc 60 is fine" value.
+
+**An APCA pass MUST NOT waive a WCAG failure** where WCAG or EN conformance is
+required. APCA is not a normative standard: the
+[WCAG 3 working draft of 2026-03-03](https://www.w3.org/TR/wcag-3.0/) names no
+contrast algorithm, so "APCA will be the WCAG 3 algorithm" is not a claim to
+build a policy on.
+
+Two things that are commonly said about this and are wrong:
+
+- *"WCAG tracks blue poorly because its blue coefficient is only 0.0722."* The
+  coefficients model human luminance perception, and APCA uses the same ones
+  (0.2126 / 0.7152 / 0.0722). APCA differs in the transfer curve, in treating
+  light-on-dark and dark-on-light asymmetrically, in its handling of very dark
+  colours, and in factoring in font size and weight — not in the coefficients.
+- *"Use your own eyeballs."* Personal visual preference is not an accessibility
+  test. A developer with typical vision is not the population whose borderline
+  cases are being judged. Measure WCAG, measure APCA in addition, and where a
+  case stays contentious, test with affected users.
 
 Rules:
 - Never convey information through color alone -- always add icons, patterns, underlines, or text
 - Test all Bootstrap theme color combinations against their backgrounds
 - Test with Chrome DevTools color contrast tools and emulated color deficiencies
-- The current WCAG contrast formula has known limitations -- use judgment alongside the numbers
+- Measure the **rendered** page, not the stylesheet: a translucent colour has no
+  ratio of its own, and an element over a gradient has no `backgroundColor` to
+  read. Run axe-core against the built output, in a real browser, in both colour
+  schemes.
 
 ```scss
 // Verify these combinations in your theme:
@@ -596,11 +650,46 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
 
 ---
 
+## WCAG 2.2 Additions
+
+These success criteria are new in WCAG 2.2 and affect sitepackage frontend code
+directly. The table states each criterion in the short form you need while
+writing code. Every one of them carries exceptions that decide real cases; the
+links go to the W3C Understanding pages, which are informative — the normative
+wording is in [WCAG 2.2](https://www.w3.org/TR/WCAG22/) itself. Read one of the
+two before calling something a failure.
+
+| SC | Level | What it requires |
+|---|---|---|
+| [2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html) | AA | A focused element must not be entirely hidden by author content. A sticky header is the usual offender — see `patterns-sticky-header.md` and `scroll-padding-top`. |
+| [2.5.7 Dragging Movements](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html) | AA | Anything operated by dragging (sliders, reorderable lists, map panning) also works with a single pointer without dragging — unless the dragging is **essential**, or the behaviour is the **user agent's** and unmodified by the author (scrollbars, touch scrolling). |
+| [2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) | AA | Pointer targets are at least 24x24 CSS px, with five exceptions (below). |
+| [3.2.6 Consistent Help](https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html) | A | Help mechanisms repeated across pages appear in the same relative order. |
+| [3.3.7 Redundant Entry](https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html) | A | Do not ask for the same information twice in one process — auto-populate it or offer it for selection. |
+| [3.3.8 Accessible Authentication (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html) | AA | No cognitive-function test (puzzle, transcription, memorisation) in an authentication step, unless that step offers an **Alternative** method without one, a **Mechanism** that assists in completing it, or the test is **Object Recognition** or **Personal Content** the user supplied. Do not block paste into password fields. |
+
+SC 2.5.8's five exceptions, of which only the first two come up in a
+sitepackage: **Spacing** (a 24px circle centred on each undersized target's
+bounding box does not intersect another target's), **Inline** (the target sits
+in a sentence, or its size is constrained by the line-height of surrounding
+non-target text), **Equivalent** (the same function is reachable through a
+conforming control on the page), **User Agent Control** (the size is the user
+agent's and the author does not modify it) and **Essential**.
+
+4.1.1 Parsing is the only criterion 2.2 **removed**, and it is not a gap when
+working to a 2.1 obligation: the WCAG 2.0 and 2.1 errata carry the same note,
+"[This Success Criteria should be considered as always satisfied for any content
+using HTML or XML](https://www.w3.org/WAI/standards-guidelines/wcag/faq/)". So
+duplicate `id` values no longer fail on their own under any current version —
+keep them unique anyway, because what used to fail here may fail other criteria,
+such as 1.3.1 or 4.1.2.
+
 ## Responsive Accessibility
 
 ### Touch Targets
 
-Minimum 44x44px for all interactive elements on mobile (WCAG 2.5.8):
+WCAG 2.2 SC 2.5.8 (Target Size, Minimum) requires 24x24 CSS px at AA; 44x44 is
+the AAA target of SC 2.5.5 and the sensible default for touch:
 
 ```scss
 @media (pointer: coarse) {
@@ -635,7 +724,7 @@ For every new content element, verify:
 - [ ] Interactive elements are keyboard-accessible
 - [ ] ARIA attributes are correct and complete
 - [ ] `aria-expanded` toggles on disclosure triggers
-- [ ] Color contrast meets WCAG AA (4.5:1 text, 3:1 UI)
+- [ ] Color contrast meets WCAG AA (4.5:1 normal text, 3:1 large text >=24px / >=18.66px bold, 3:1 UI), measured on the rendered page
 - [ ] Information is not conveyed by color alone
 - [ ] Focus order follows visual/DOM order
 - [ ] Focus indicator is visible (3:1 contrast)

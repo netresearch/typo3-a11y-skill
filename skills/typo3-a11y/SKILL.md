@@ -1,11 +1,11 @@
 ---
 name: typo3-a11y
-description: "Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility in TYPO3 v13/v14 LTS projects. Also covers frontend implementation patterns: sticky header, lazy loading, breadcrumb, language switcher, animations, scroll-to-anchor, skeleton loading, toast notifications, back-to-top. Covers WCAG 2.1 AA: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog element modal (#107443), Camino theme a11y."
+description: "Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility in TYPO3 v13/v14 LTS projects. Also covers frontend implementation patterns: sticky header, lazy loading, breadcrumb, language switcher, animations, scroll-to-anchor, skeleton loading, toast notifications, back-to-top. Covers WCAG 2.2 AA: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog element modal (#107443), Camino theme a11y."
 ---
 
 # TYPO3 Accessibility Skill
 
-WCAG 2.1 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development.
+WCAG 2.2 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development. EN 301 549 still cites 2.1 AA; 2.2 covers the WCAG part of both, not EN's further clauses.
 
 **v14 a11y wins** (use as reference):
 
@@ -33,13 +33,13 @@ When creating or reviewing content elements, verify:
 - Images have `alt` text (or `alt=""` for decorative)
 - Focus indicators are visible (`:focus-visible` styles)
 - `prefers-reduced-motion` is respected for animations
-- Color contrast meets WCAG AA (4.5:1 text, 3:1 large text/UI)
+- Color contrast meets WCAG AA: 4.5:1, or 3:1 for UI and large text (>=24px / >=18.66px bold), measured not eyeballed. APCA never waives a WCAG failure
 - Keyboard navigation works (Tab, Escape, Enter, Space)
 
 ## References
 
 ### Core
-- `references/accessibility.md` -- WCAG 2.1 AA comprehensive guide
+- `references/accessibility.md` -- WCAG 2.2 AA guide, contrast policy
 
 ### Patterns
 - `references/patterns-skiplinks.md` -- Mandatory skip link navigation

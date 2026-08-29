@@ -356,7 +356,7 @@
   },
   {
     "name": "contrast-thresholds-text-and-ui",
-    "prompt": "Which contrast ratios do we have to meet for WCAG 2.1 AA in a TYPO3 sitepackage — body text, large headings, and the border of an input field?",
+    "prompt": "Which contrast ratios do we have to meet for WCAG 2.2 AA in a TYPO3 sitepackage — body text, large headings, and the border of an input field?",
     "assertions": [
       {
         "type": "content_regex",
@@ -370,8 +370,29 @@
       },
       {
         "type": "content_regex",
-        "value": "(?i)(large|18|14|bold)",
-        "description": "Defines what counts as large text rather than leaving the threshold unusable"
+        "value": "(?i)(24\\s*(css\\s*)?px|18\\.66)",
+        "description": "Names the real large-text threshold (24 CSS px, or 18.66 px bold) rather than the widespread wrong 18px"
+      }
+    ]
+  },
+  {
+    "name": "apca-does-not-waive-wcag",
+    "prompt": "Our brand turquoise button (white 16px/600 text on #2F99A4) is 3.38:1, but it scores fine in APCA. Can we ship it and cite APCA?",
+    "assertions": [
+      {
+        "type": "content_contains",
+        "value": "4.5",
+        "description": "States the 4.5:1 requirement that a 16px/600 label falls under"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)APCA[^.]{0,70}?(cannot|can't|do not|don't|does not|doesn't|must not|should not|never|is no|is not a)[^.]{0,40}?(waive|override|supersede|replace|substitute|excuse)[^.]{0,40}?WCAG",
+        "description": "Says an APCA pass does not waive the WCAG failure"
+      },
+      {
+        "type": "content_regex",
+        "value": "(?i)(darker|#25|#15|dark(er)? (teal|variant))",
+        "description": "Offers the darker fill instead of shipping the failing one"
       }
     ]
   }
