@@ -5,7 +5,7 @@ description: "Use when building accessible navigation, forms, filters, tables, s
 
 # TYPO3 Accessibility Skill
 
-WCAG 2.2 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development. EN 301 549 still references 2.1 AA; building to 2.2 satisfies both.
+WCAG 2.2 Level AA compliance standards for TYPO3 v13 and **v14.3 LTS** sitepackage frontend development. EN 301 549 still cites 2.1 AA; 2.2 covers the WCAG part of both, not EN's further clauses.
 
 **v14 a11y wins** (use as reference):
 
@@ -33,7 +33,7 @@ When creating or reviewing content elements, verify:
 - Images have `alt` text (or `alt=""` for decorative)
 - Focus indicators are visible (`:focus-visible` styles)
 - `prefers-reduced-motion` is respected for animations
-- Color contrast meets WCAG AA -- 4.5:1, or 3:1 for UI and large text (>=24px / >=18.66px bold); measure the rendered page, never by eye. APCA never waives a WCAG failure
+- Color contrast meets WCAG AA: 4.5:1, or 3:1 for UI and large text (>=24px / >=18.66px bold), measured not eyeballed. APCA never waives a WCAG failure
 - Keyboard navigation works (Tab, Escape, Enter, Space)
 
 ## References

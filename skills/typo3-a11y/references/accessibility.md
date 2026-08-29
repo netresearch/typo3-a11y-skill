@@ -2,15 +2,19 @@
 
 WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code.
 
-Where EN 301 549 conformance is contractually required, the harmonised version
-cited in the EU Official Journal today is still
-[v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf),
-which references WCAG 2.1 AA — so 2.1 remains the legal yardstick for now.
-Version 4.1.1
-adopts WCAG 2.2 AA and is expected to be cited around late 2026. Building to 2.2
-satisfies both: everything in 2.1 is also in 2.2, and the one criterion 2.2
-dropped (4.1.1 Parsing) is treated as always satisfied in 2.1 as well — see
-"WCAG 2.2 Additions" below.
+Where EN 301 549 conformance is contractually required: as of August 2026 the
+harmonised version cited in the EU Official Journal is still
+[v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf)
+(cited 2021-08-12), which references WCAG 2.1 AA. Version 4.1.1 adopts WCAG 2.2
+AA but is still an approval draft and is not cited yet; publication is expected
+around late 2026.
+
+Building to WCAG 2.2 covers the WCAG part of both versions: everything in 2.1 is
+also in 2.2, and the one criterion 2.2 dropped (4.1.1 Parsing) is treated as
+always satisfied in 2.1 as well — see "WCAG 2.2 Additions" below. It is **not**
+full EN 301 549 conformance on its own: the standard carries further clauses
+(non-web documents and software, hardware, support documentation, ICT with
+two-way voice or video) that WCAG does not address.
 
 ## Table of Contents
 
@@ -649,9 +653,10 @@ Add accessibility Stylelint rules to `Build/.stylelintrc.json`:
 
 These success criteria are new in WCAG 2.2 and affect sitepackage frontend code
 directly. The table states each criterion in the short form you need while
-writing code.
-Every one of them carries exceptions that decide real cases, and those live in
-the linked normative text — read it before calling something a failure.
+writing code. Every one of them carries exceptions that decide real cases; the
+links go to the W3C Understanding pages, which are informative — the normative
+wording is in [WCAG 2.2](https://www.w3.org/TR/WCAG22/) itself. Read one of the
+two before calling something a failure.
 
 | SC | Level | What it requires |
 |---|---|---|
@@ -675,8 +680,8 @@ working to a 2.1 obligation: the WCAG 2.0 and 2.1 errata carry the same note,
 "[This Success Criteria should be considered as always satisfied for any content
 using HTML or XML](https://www.w3.org/WAI/standards-guidelines/wcag/faq/)". So
 duplicate `id` values no longer fail on their own under any current version —
-keep them unique anyway, because what used to fail here now fails 1.3.1 or
-4.1.2 instead.
+keep them unique anyway, because what used to fail here may fail other criteria,
+such as 1.3.1 or 4.1.2.
 
 ## Responsive Accessibility
 
