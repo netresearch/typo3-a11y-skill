@@ -18,19 +18,25 @@ the DOM domain, then ask the accessibility domain about them.
 def ax(cdp, selector, index=0):
     """role / name / description of the nth match, from Chrome's own tree."""
     root = cdp.send("DOM.getDocument", {"depth": -1})["root"]["nodeId"]
-    ids = cdp.send("DOM.querySelectorAll", {"nodeId": root, "selector": selector})["nodeIds"]
+    ids = cdp.send("DOM.querySelectorAll", {"nodeId": root, "selector": selector})[
+        "nodeIds"
+    ]
     if index >= len(ids):
         return None
-    n = cdp.send("Accessibility.getPartialAXTree",
-                 {"nodeId": ids[index], "fetchRelatives": False})["nodes"][0]
+    n = cdp.send(
+        "Accessibility.getPartialAXTree",
+        {"nodeId": ids[index], "fetchRelatives": False},
+    )["nodes"][0]
     return {
         "ignored": n.get("ignored"),
         "role": (n.get("role") or {}).get("value"),
         "name": (n.get("name") or {}).get("value"),
         "description": (n.get("description") or {}).get("value"),
-        "nameSources": [s.get("type")
-                        for s in (n.get("name") or {}).get("sources", [])],
+        "nameSources": [
+            s.get("type") for s in (n.get("name") or {}).get("sources", [])
+        ],
     }
+
 
 cdp = context.new_cdp_session(page)
 cdp.send("Accessibility.enable")
@@ -130,8 +136,10 @@ before and after, compared pixel by pixel.
 
 ```python
 from PIL import Image, ImageChops
-d = ImageChops.difference(Image.open("before.png").convert("RGB"),
-                          Image.open("after.png").convert("RGB"))
+
+d = ImageChops.difference(
+    Image.open("before.png").convert("RGB"), Image.open("after.png").convert("RGB")
+)
 assert d.getbbox() is None, "rendering changed"
 ```
 
