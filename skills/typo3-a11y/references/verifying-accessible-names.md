@@ -91,8 +91,19 @@ or move the trigger out.
 An `<i>` renders its glyph through `::before`. Up to and including FA 6,
 without `aria-hidden="true"` that character becomes part of the ancestor's
 name-from-contents — `"Downloads by month "`. It is invisible in a terminal,
-and `jq` output swallows it, so it survives review. Grep your measured names
-for `\uf0`–`\uf2` ranges.
+and `jq` output swallows it, so it survives review.
+
+Scan measured names for the **whole Private Use Area**, `U+E000`-`U+F8FF`, not a
+narrower slice. FontAwesome spreads its glyphs across it and does not stay in
+one band: of the 1939 icons in 7.3.1, 516 sit below `U+F000` (the `\e0xx` range
+its newer icons use) and 808 above `U+F2FF` - a `\uf0`-`\uf2` grep finds barely
+a third of them.
+
+```python
+import re
+
+assert not re.search(r"[\ue000-\uf8ff]", name), f"glyph leaked into {name!r}"
+```
 
 **FA 7 changed the default**, so check the resolved version before reporting this
 as a defect. Its CSS gives every style class an empty *CSS alternative text*,
