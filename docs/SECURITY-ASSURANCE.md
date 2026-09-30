@@ -14,12 +14,12 @@ This document states what a user can expect from this repository in terms of sec
 | Package metadata | `composer.json`, `plugin.json`, `.claude-plugin/plugin.json` | Read by Composer and by Claude Code when the skill is installed. |
 | Repository configuration | `.github/workflows/*.yml`, `.pre-commit-config.yaml`, `.yamllint.yml`, `.markdownlint-cli2.jsonc`, `renovate.json` | In this repository's CI and on contributors' machines. |
 
-The repository ships no script, no server component and no container image. It stores nothing and handles no user accounts or credentials. The release archives contain `SKILL.md`, the references, `.claude-plugin/` and the two licence files: the skill-repo-skill release reusable called by `release.yml` copies only `SKILL.md`, `references`, `scripts`, `assets`, `templates`, `examples`, `checkpoints.yaml`, `.claude-plugin`, `hooks` and the licence files, and of those only the four named exist here.
+The repository ships no script, no server component and no container image. It stores nothing and handles no user accounts or credentials. The release archives contain `SKILL.md`, the references and the two licence files; the plugin archive also contains `.claude-plugin/`. The skill-repo-skill release reusable called by `release.yml` copies only `SKILL.md`, `references`, `scripts`, `assets`, `templates`, `examples`, `checkpoints.yaml`, the licence files and, for the plugin archive, `.claude-plugin` and `hooks`; of those, only the paths named above exist here.
 
 ## Security requirements
 
 1. The skill content does not recommend frontend code that inserts text into the page as markup.
-2. A change reaches `main` only through a pull request whose commits are signed and signed off, after the required checks pass.
+2. A change reaches `main` through a pull request whose commits are signed and signed off and that passes the required checks. Branch protection is not enforced for repository administrators.
 3. Nothing committed to this repository contains a secret.
 4. A release carries the version that `.claude-plugin/plugin.json` states, and its archives can be verified against the build that produced them.
 
@@ -58,6 +58,7 @@ The repository ships no executable code that takes input: the TypeScript and Flu
 
 ## What a user cannot expect
 
+- The required checks are automated. Branch protection requires no approving review, `pr-quality.yml` approves pull requests of collaborators with write access, and repository administrators are exempt from branch protection (repository settings, read 2026-09-30).
 - The skill gives guidance; it does not enforce it. The agent decides what to write, and the result needs the same review as any other code change.
 - The snippets are examples to adapt. They do not validate URLs or other values taken from data attributes or TYPO3 records; the consumer's templates decide what reaches them.
 - No dependency-vulnerability check (dependency review, Composer Audit) and no SAST for the snippet languages run on pull requests. The only declared Composer dependency is `netresearch/composer-agent-skill-plugin` with the constraint `*`, and no lock file is committed.
