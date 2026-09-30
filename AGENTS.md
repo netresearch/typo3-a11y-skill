@@ -39,4 +39,6 @@ No Makefile. Key operations:
 
 - [README.md](README.md) — human-facing documentation
 - [skills/typo3-a11y/SKILL.md](skills/typo3-a11y/SKILL.md) — skill content and triggers
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — components and CI
+- [docs/SECURITY-ASSURANCE.md](docs/SECURITY-ASSURANCE.md) — security assurance case: threats, trust boundaries, limits
 - `netresearch/skill-repo-skill` (external) — source of truth for reusable CI workflows and structural conventions
