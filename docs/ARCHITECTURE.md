@@ -24,8 +24,9 @@ YAML frontmatter (name, description) plus the recommendations that hold for ever
 sitepackage: skip links, underlined body links, never disabling buttons, no
 `role="menu"` for navigation, zoomable viewport, `aria-expanded` on disclosure
 triggers, and the per-content-element checklist. Agents read this first, so it
-stays under the 500-word cap the `skill-repo` validator enforces (`wc -w` over
-the whole file, frontmatter included) — anything longer belongs in a reference.
+stays short: the `skill-repo` validator counts the lines of the body after the
+frontmatter, warns above 300 and fails above 500 — anything longer belongs in a
+reference.
 
 ### References (lazy-loaded)
 

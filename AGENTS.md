@@ -23,7 +23,7 @@ No Makefile. Key operations:
 
 - `composer install` — install dependencies and, via `post-install-cmd`, the pre-commit hooks
 - `composer install-hooks` — install the pre-commit hooks on their own
-- Validate skill repo structure: run `skill-repo-skill`'s `validate-skill.sh` against repo root. It caps `SKILL.md` at 500 words counted by `wc -w` over the whole file, frontmatter included
+- Validate skill repo structure: run `skill-repo-skill`'s `validate-skill.sh` against repo root. It counts the lines of the `SKILL.md` body (frontmatter excluded): more than 500 is an error, more than 300 a warning
 - Release: bump `.claude-plugin/plugin.json` version, open PR, merge, signed tag `vX.Y.Z`, push tag — the `release.yml` caller builds the GitHub release
 
 ## Rules
