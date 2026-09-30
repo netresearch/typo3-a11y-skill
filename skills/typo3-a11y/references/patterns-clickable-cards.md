@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Clickable Cards
 
 Cards and teasers often need to be entirely clickable while remaining accessible. Naive approaches create problems for screen readers, keyboard users, or break native browser behavior.

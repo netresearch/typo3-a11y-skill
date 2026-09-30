@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Verifying accessible names — measure, do not reason
 
 **When to load:** before claiming that an element has (or lacks) an accessible

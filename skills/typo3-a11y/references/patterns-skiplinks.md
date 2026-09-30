@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Skip Link Navigation
 
 Skip links are mandatory in every sitepackage. They allow keyboard users and screen reader users to jump directly to main content sections, bypassing repetitive navigation.

@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # typo3-a11y-skill
 
 WCAG 2.2 AA accessibility patterns for TYPO3 v13+ sitepackage frontend development. A Claude Code skill that provides comprehensive accessibility guidelines, HTML/ARIA patterns, SCSS examples, and TypeScript implementations.

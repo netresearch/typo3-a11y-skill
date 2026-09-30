@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Accessible Data Filtering & Tables
 
 Patterns for accessible filtering, pagination, sorting, and semantic tables.

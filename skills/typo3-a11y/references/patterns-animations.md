@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Scroll Animations
 
 Standard scroll-triggered animations with `prefers-reduced-motion` support and IntersectionObserver.

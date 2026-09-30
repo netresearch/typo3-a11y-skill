@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Accessible Forms
 
 Patterns for building accessible, usable forms. All examples use Bootstrap 5 classes and TYPO3 Fluid conventions.

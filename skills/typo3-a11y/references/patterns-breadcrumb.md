@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Breadcrumb
 
 Complete breadcrumb pattern with Fluid partial, JSON-LD structured data, and SCSS.

@@ -1,4 +1,6 @@
 ---
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# SPDX-FileCopyrightText: Netresearch DTT GmbH
 name: typo3-a11y
 description: "Use when building accessible navigation, forms, filters, tables, skip links, disclosure widgets, or reviewing frontend code for accessibility in TYPO3 v13/v14 LTS projects. Also covers frontend implementation patterns: sticky header, lazy loading, breadcrumb, language switcher, animations, scroll-to-anchor, skeleton loading, toast notifications, back-to-top. Covers WCAG 2.2 AA: ARIA attributes, focus management, keyboard navigation, screen reader support, color contrast, link identification, heading hierarchy, native dialog element modal (#107443), Camino theme a11y."
 ---
