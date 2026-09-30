@@ -56,8 +56,11 @@ Run them locally from the repository root:
 pre-commit run --all-files
 
 base=https://raw.githubusercontent.com/netresearch/skill-repo-skill/main/skills/skill-repo/scripts
-curl -fsSLO "$base/validate-skill.sh" && bash validate-skill.sh .
-curl -fsSLO "$base/validate-evals.sh" && bash validate-evals.sh evals/evals.json
+tools=$(mktemp -d)
+curl -fsSL -o "$tools/validate-skill.sh" "$base/validate-skill.sh"
+curl -fsSL -o "$tools/validate-evals.sh" "$base/validate-evals.sh"
+bash "$tools/validate-skill.sh" .
+bash "$tools/validate-evals.sh" evals/evals.json
 ```
 
 `validate-skill.sh` ends with `Errors:` and `Warnings:` counts and exits 1 when there is at least one error; warnings do not fail it. `validate-evals.sh` ends with `Results: N passed, M failed, K warnings` and exits 1 when `M` is not 0; each failing line names the eval and the check. A failed pre-commit hook prints its name followed by `Failed` and the tool's own output.
