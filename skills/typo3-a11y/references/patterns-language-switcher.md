@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Language Switcher
 
 Complete language switcher pattern using b13/menus LanguageMenu, with flag SVGs and accessible markup.

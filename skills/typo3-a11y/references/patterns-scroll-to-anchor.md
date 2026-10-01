@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Scroll to Anchor
 
 Smooth scroll to anchor links with sticky header offset, history update, and deep link support.

@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Architecture — typo3-a11y-skill
 
 ## Purpose
@@ -24,8 +27,9 @@ YAML frontmatter (name, description) plus the recommendations that hold for ever
 sitepackage: skip links, underlined body links, never disabling buttons, no
 `role="menu"` for navigation, zoomable viewport, `aria-expanded` on disclosure
 triggers, and the per-content-element checklist. Agents read this first, so it
-stays under the 500-word cap the `skill-repo` validator enforces (`wc -w` over
-the whole file, frontmatter included) — anything longer belongs in a reference.
+stays short: the `skill-repo` validator counts the lines of the body after the
+frontmatter, warns above 300 and fails above 500 — anything longer belongs in a
+reference.
 
 ### References (lazy-loaded)
 
@@ -57,8 +61,24 @@ APCA-does-not-waive-WCAG rule) gets pinned down.
 
 ## CI
 
-Workflows call the shared reusables in `netresearch/.github` and
-`netresearch/skill-repo-skill`: skill-structure validation, eval validation,
-harness consistency, DCO, CodeQL, dependency review and secret scanning. Releases
+The workflows in `.github/workflows/` are thin callers of shared reusables:
+
+- `validate.yml` (skill-repo-skill): skill-structure validation, plugin manifest
+  sync, markdownlint, yamllint, actionlint, JSON syntax, version checks,
+  ShellCheck, ruff and checkpoint schemas.
+- `eval-validate.yml` (skill-repo-skill): structure and samples of
+  `evals/evals.json`.
+- `harness-verify.yml` (skill-repo-skill): AGENTS.md size, links and documented
+  commands.
+- `pr-quality.yml` (skill-repo-skill): approves pull requests of collaborators
+  with write access; it checks nothing.
+- `auto-merge-deps.yml` (`netresearch/.github`): merges pull requests opened by
+  Renovate or Dependabot, except those labelled `deps-no-automerge` or
+  `deps-major`.
+- `release.yml` (skill-repo-skill): builds and signs the release on a tag push.
+
+DCO, CodeQL (default setup, GitHub Actions workflows) and secret scanning with
+push protection are repository settings and GitHub Apps, not workflows in this
+repository. No dependency-vulnerability check runs on pull requests. Releases
 are cut by bumping `.claude-plugin/plugin.json`, merging, then pushing a signed
 `vX.Y.Z` tag.

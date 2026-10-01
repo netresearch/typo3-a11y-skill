@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Accessibility Standards
 
 WCAG 2.2 Level AA compliance for TYPO3 sitepackage frontend code.

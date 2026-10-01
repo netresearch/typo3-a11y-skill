@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Lazy Loading with IntersectionObserver
 
 Pattern for initializing content elements only when they become visible in the viewport. Reduces initial JS execution and improves INP.

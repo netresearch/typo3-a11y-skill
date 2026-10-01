@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
+
 # Pattern: Accessible Navigation
 
 Accessible main navigation using `<nav>` with semantic lists, b13/menus TreeMenu, and proper ARIA attributes. Navigation is a **list of links**, never an ARIA menu.
