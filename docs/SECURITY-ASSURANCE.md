@@ -29,7 +29,7 @@ The repository ships no script, no server component and no container image. It s
 - **Consumer project.** Code derived from the snippets runs in the consumer's TYPO3 frontend, in visitors' browsers. From that point it is the consumer's code; this repository has no runtime connection to it.
 - **Contributors.** Changes reach `main` through pull requests, checked by the workflows in `.github/workflows/` and by the required checks listed below. A contributor who runs `composer install` gets the pre-commit hooks from `.pre-commit-config.yaml` installed (`composer.json`, script `install-hooks`).
 - **CI.** Workflows run on GitHub-hosted runners. The two `pull_request_target` callers (`pr-quality.yml`, `auto-merge-deps.yml`) set `permissions: {}` at the top level, grant the job only `pull-requests: write` (plus `contents: write` for the merge), and call reusables that approve or merge without checking out pull request code; `pr-quality.yml` states this in its header comment.
-- **Dependency bot.** Renovate (`renovate.json`, preset `github>netresearch/renovate-config`) opens pull requests that bump the pinned `rev:` of the pre-commit hooks; `auto-merge-deps.yml` approves and merges pull requests whose author is `renovate[bot]` or `dependabot[bot]`.
+- **Dependency bot.** Renovate (`renovate.json`, preset `github>netresearch/renovate-config`) opens pull requests that bump the pinned `rev:` of the pre-commit hooks; `auto-merge-deps.yml` approves and merges pull requests whose author is `renovate[bot]` or `dependabot[bot]`, except those labelled `deps-no-automerge` or `deps-major`.
 
 ## Threats and countermeasures
 
@@ -44,7 +44,7 @@ The repository ships no script, no server component and no container image. It s
 | A malformed manifest or eval reaches `main` | Skill Validation parses every tracked `*.json`, compares the two plugin manifests and checks the version format; Eval Validation checks `evals/evals.json` and, for a new or changed eval, that its `samples` match its assertions | `.github/workflows/validate.yml`, `.github/workflows/eval-validate.yml` |
 | A release is built from a forged tag or with a version that disagrees with `plugin.json` | The release reusable accepts only annotated tags that GitHub reports as signed, and fails when the tag differs from `.claude-plugin/plugin.json` | `.github/workflows/release.yml` |
 | A released archive is tampered with | The release reusable publishes a Cosign-signed (keyless) `SHA256SUMS.txt` and build-provenance attestations for the archives | `.github/workflows/release.yml` |
-| A pre-commit hook changes underneath contributors | Each hook is pinned by `rev:`; a new revision arrives only as a Renovate pull request | `.pre-commit-config.yaml`, `renovate.json` |
+| A pre-commit hook changes underneath contributors | Each hook is pinned by a version tag in `rev:`; a new version arrives as a Renovate pull request. The tags are not commit SHAs, so an upstream tag that is moved to other code is not detected | `.pre-commit-config.yaml`, `renovate.json` |
 
 ## Secure design principles applied
 

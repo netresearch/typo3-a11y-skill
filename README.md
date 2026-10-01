@@ -72,7 +72,7 @@ In CI, `validate.yml` (Skill Validation) and `eval-validate.yml` (Eval Validatio
 - **Composer:** `composer.json` requires `netresearch/composer-agent-skill-plugin` (constraint `*`), the Composer plugin for packages of type `ai-agent-skill`; `extra.ai-agent-skill` names the skill file. No lock file is committed: the package is installed as a dependency of other projects, whose lock files pin it.
 - **Pre-commit hooks:** each hook repository in `.pre-commit-config.yaml` is pinned by `rev:`. `composer install` installs the hooks when `pre-commit` is available.
 - **CI:** the workflows call reusable workflows of `netresearch/skill-repo-skill` and `netresearch/.github` at `@main`; those pin their actions by commit SHA.
-- **Updates:** Renovate (`renovate.json`, preset `github>netresearch/renovate-config`) opens pull requests for new hook revisions; `auto-merge-deps.yml` merges Renovate and Dependabot pull requests once the required checks pass.
+- **Updates:** Renovate (`renovate.json`, preset `github>netresearch/renovate-config`) opens pull requests for new hook revisions; `auto-merge-deps.yml` merges Renovate and Dependabot pull requests once the required checks pass, except those labelled `deps-no-automerge` or `deps-major`.
 - **Selection:** a new dependency is added only when the skill or its tooling needs it, from its upstream source (Packagist, the tool's own repository), under a licence compatible with this repository's.
 
 ## Governance and policies
