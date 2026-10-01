@@ -72,8 +72,9 @@ The workflows in `.github/workflows/` are thin callers of shared reusables:
   commands.
 - `pr-quality.yml` (skill-repo-skill): approves pull requests of collaborators
   with write access; it checks nothing.
-- `auto-merge-deps.yml` (`netresearch/.github`): merges dependency update pull
-  requests.
+- `auto-merge-deps.yml` (`netresearch/.github`): merges pull requests opened by
+  Renovate or Dependabot, except those labelled `deps-no-automerge` or
+  `deps-major`.
 - `release.yml` (skill-repo-skill): builds and signs the release on a tag push.
 
 DCO, CodeQL (default setup, GitHub Actions workflows) and secret scanning with
