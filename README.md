@@ -45,7 +45,7 @@ composer require netresearch/typo3-a11y-skill
 
 The repository ships Markdown and configuration, no executable code. Its tests are the structural validators and the evals:
 
-- `evals/evals.json` holds one eval per rule that is easy to state and easy to get wrong: a prompt an agent might receive, regular-expression assertions a correct answer must match, and `samples` of a passing and failing answer.
+- `evals/evals.json` holds one eval per rule that is easy to state and easy to get wrong: a prompt an agent might receive, regular-expression assertions a correct answer must match, and, for 8 of the 17 evals, `samples` of a passing and a failing answer. A pull request that adds an eval or changes its assertions must add samples (see below).
 - `validate-evals.sh` (from `netresearch/skill-repo-skill`) checks the structure of every eval and runs its assertions against its samples with the same `grep -E` the grader uses.
 - `validate-skill.sh` (same source) checks the skill layout, the `SKILL.md` frontmatter and size, the manifests and the presence of `README.md`, the licence files and `.gitignore`.
 - The pre-commit hooks in `.pre-commit-config.yaml` run `validate-skill.sh`, the version-parity check, markdownlint, yamllint, actionlint, JSON and YAML syntax, ruff and ShellCheck.
@@ -89,8 +89,8 @@ The security assurance case for this skill (threat model, trust boundaries, coun
 
 Checks that run on pull requests in this repository:
 
-- Every pull request: Skill Validation (`validate.yml`: skill structure, manifest sync, markdownlint, yamllint, actionlint, JSON syntax, ShellCheck, ruff, checkpoint schemas) and Eval Validation (`eval-validate.yml`).
-- Pull requests to `main`: Harness Verification (`harness-verify.yml`), CodeQL analysis of the GitHub Actions workflows (default setup) and the DCO sign-off check. Secret scanning with push protection is enabled for the repository.
+- Every pull request: Skill Validation (`validate.yml`: skill structure, manifest sync, markdownlint, yamllint, actionlint, JSON syntax, ShellCheck, ruff, checkpoint schemas), Eval Validation (`eval-validate.yml`), PR Quality Gates (`pr-quality.yml`, which approves pull requests whose author has write, maintain or admin permission and checks nothing else) and the dependency auto-merge job (`auto-merge-deps.yml`, skipped unless a dependency bot opened the pull request).
+- Pull requests to `main`: Harness Verification (`harness-verify.yml`), CodeQL analysis of the GitHub Actions workflows (default setup) and the DCO sign-off check. Configured outside the workflows: Copilot code review (a repository ruleset) and CodeRabbit review. Secret scanning with push protection is enabled for the repository.
 - No dependency-vulnerability check (dependency review, Composer Audit) and no static security analysis of the Markdown snippets run here.
 
 ## License
