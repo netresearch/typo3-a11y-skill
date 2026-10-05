@@ -309,21 +309,27 @@ styled as a toggle button with Bootstrap's `btn-check`, plus visible text that
 says when it takes effect.
 
 ```html
-<f:for each="{extension.tags}" as="tag">
-    <div class="btn-group">
-        <span class="btn btn-info">#{tag.title}</span>
-        <f:form.checkbox name="removeTags" multiple="1" value="{tag.uid}"
-            id="removeTag-{tag.uid}" class="btn-check"
-            additionalAttributes="{autocomplete: 'off'}" />
-        <label class="btn btn-outline-danger" for="removeTag-{tag.uid}">
-            <span aria-hidden="true"><i class="fa fa-trash-o"></i></span>
-            <span class="visually-hidden">Remove tag #{tag.title} on save</span>
-        </label>
-    </div>
-</f:for>
-<p class="form-text">Tags marked with the trash icon are removed when you save.</p>
+<fieldset aria-describedby="removeTagsHint">
+    <legend class="visually-hidden">Tags to remove on save</legend>
+    <f:for each="{extension.tags}" as="tag">
+        <div class="btn-group">
+            <span class="btn btn-info">#{tag.title}</span>
+            <f:form.checkbox name="removeTags" multiple="1" value="{tag.uid}"
+                id="removeTag-{tag.uid}" class="btn-check"
+                additionalAttributes="{autocomplete: 'off'}" />
+            <label class="btn btn-outline-danger" for="removeTag-{tag.uid}">
+                <span aria-hidden="true"><i class="fa fa-trash-o"></i></span>
+                <span class="visually-hidden">Remove tag #{tag.title} on save</span>
+            </label>
+        </div>
+    </f:for>
+    <p class="form-text" id="removeTagsHint">Tags marked with the trash icon are removed when you save.</p>
+</fieldset>
 ```
 
+- The checkboxes are a group, so they sit in a `<fieldset>` with a
+  `<legend>` (see *Grouping Fields*); the legend can be visually hidden when
+  the surrounding layout already shows what the group is.
 - The checkbox carries the state, so keyboard (Tab, Space) and screen readers
   work without extra ARIA; the checked state shows as the filled button.
 - `autocomplete="off"` stops Firefox from restoring a ticked box after a
