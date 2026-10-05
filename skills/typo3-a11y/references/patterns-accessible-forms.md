@@ -288,6 +288,57 @@ Use `<fieldset>` and `<legend>` for semantically related fields. Screen readers 
 </fieldset>
 ```
 
+## Per-Row Actions Inside a Form
+
+An edit form that lists items with a "remove" action per row (tags,
+attachments, repeated fields) must not give each row its own submit button,
+and must not make the action a link.
+
+- **A link** (`<a href="…?action=removeTag">`) never submits the form: the
+  edits the user typed into the other fields are lost on the round trip, and
+  the request changes state through GET.
+- **A submit button per row** sends the form, but pressing Enter in any text
+  field triggers the form's *default button* — the first submit button in tree
+  order (HTML, *implicit submission*). With the row buttons above "Save", Enter
+  in the first field removes the first row.
+- **A `<button>` without `type`** is a submit button too. A decorative button
+  used as a label submits the form when clicked.
+
+Mark the rows instead and apply the marks on save: a real checkbox per row,
+styled as a toggle button with Bootstrap's `btn-check`, plus visible text that
+says when it takes effect.
+
+```html
+<fieldset aria-describedby="removeTagsHint">
+    <legend class="visually-hidden">Tags to remove on save</legend>
+    <f:for each="{extension.tags}" as="tag">
+        <div class="btn-group">
+            <span class="btn btn-info">#{tag.title}</span>
+            <f:form.checkbox name="removeTags" multiple="1" value="{tag.uid}"
+                id="removeTag-{tag.uid}" class="btn-check"
+                additionalAttributes="{autocomplete: 'off'}" />
+            <label class="btn btn-outline-danger" for="removeTag-{tag.uid}">
+                <span aria-hidden="true"><i class="fa fa-trash-o"></i></span>
+                <span class="visually-hidden">Remove tag #{tag.title} on save</span>
+            </label>
+        </div>
+    </f:for>
+    <p class="form-text" id="removeTagsHint">Tags marked with the trash icon are removed when you save.</p>
+</fieldset>
+```
+
+- The checkboxes are a group, so they sit in a `<fieldset>` with a
+  `<legend>` (see *Grouping Fields*); the legend can be visually hidden when
+  the surrounding layout already shows what the group is.
+- The checkbox carries the state, so keyboard (Tab, Space) and screen readers
+  work without extra ARIA; the checked state shows as the filled button.
+- `autocomplete="off"` stops Firefox from restoring a ticked box after a
+  reload, which would remove the row on the next save unnoticed.
+- Give the label its name once, in the visually hidden text; a `title` with
+  the same text is announced twice by some screen readers.
+- Fluid's `CheckboxViewHelper` reads the last submitted value back, so after
+  a validation error the boxes come back ticked.
+
 ## Multi-Step Forms
 
 ### Step Indicator (Fluid Partial)
@@ -446,5 +497,6 @@ Key points:
 - [ ] Multi-step forms show progress with `aria-current="step"`
 - [ ] Each form step has a heading
 - [ ] Native form elements used -- no `<div>` role hacks
+- [ ] Per-row actions inside a form are checkboxes applied on save, not links or extra submit buttons; every `<button>` has an explicit `type`
 - [ ] No placeholder-only labels
 - [ ] TYPO3 form framework templates overridden to include ARIA attributes
