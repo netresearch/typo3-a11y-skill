@@ -71,7 +71,7 @@ In CI, `validate.yml` (Skill Validation) and `eval-validate.yml` (Eval Validatio
 
 - **Composer:** `composer.json` requires `netresearch/composer-agent-skill-plugin` (constraint `*`), the Composer plugin for packages of type `ai-agent-skill`; `extra.ai-agent-skill` names the skill file. No lock file is committed: the package is installed as a dependency of other projects, whose lock files pin it.
 - **Pre-commit hooks:** each hook repository in `.pre-commit-config.yaml` is pinned by `rev:`. `composer install` installs the hooks when `pre-commit` is available.
-- **CI:** the workflows call reusable workflows of `netresearch/skill-repo-skill` and `netresearch/.github` at `@main`; those pin their actions by commit SHA.
+- **CI:** the workflows call reusable workflows of `netresearch/skill-repo-skill`, `netresearch/.github` and `netresearch/typo3-ci-workflows` at `@main`; those pin their actions by commit SHA.
 - **Updates:** Renovate (`renovate.json`, preset `github>netresearch/renovate-config`) opens pull requests for new hook revisions; `auto-merge-deps.yml` merges Renovate and Dependabot pull requests once the required checks pass, except those labelled `deps-no-automerge` or `deps-major`.
 - **Selection:** a new dependency is added only when the skill or its tooling needs it, from its upstream source (Packagist, the tool's own repository), under a licence compatible with this repository's.
 
@@ -89,9 +89,11 @@ The security assurance case for this skill (threat model, trust boundaries, coun
 
 Checks that run on pull requests in this repository:
 
-- Every pull request: Skill Validation (`validate.yml`: skill structure, manifest sync, markdownlint, yamllint, actionlint, JSON syntax, ShellCheck, ruff, checkpoint schemas), Eval Validation (`eval-validate.yml`), PR Quality Gates (`pr-quality.yml`, which approves pull requests whose author has write, maintain or admin permission and checks nothing else) and the dependency auto-merge job (`auto-merge-deps.yml`, skipped unless a dependency bot opened the pull request).
-- Pull requests to `main`: Harness Verification (`harness-verify.yml`), CodeQL analysis of the GitHub Actions workflows (default setup) and the DCO sign-off check. Configured outside the workflows: Copilot code review (a repository ruleset) and CodeRabbit review. Secret scanning with push protection is enabled for the repository.
-- No dependency-vulnerability check (dependency review, Composer Audit) and no static security analysis of the Markdown snippets run here.
+- Every pull request: Skill Validation (`validate.yml`: skill structure, manifest sync, markdownlint, yamllint, actionlint, JSON syntax, ShellCheck, ruff, checkpoint schemas; `lint.yml` is a second caller of the same reusable), Eval Validation (`eval-validate.yml`), PR Quality Gates (`pr-quality.yml`, which approves pull requests whose author has write, maintain or admin permission and checks nothing else), Labeler (`labeler.yml`, which applies labels from `.github/labeler.yml`) and the dependency auto-merge job (`auto-merge-deps.yml`, skipped unless a dependency bot opened the pull request).
+- Pull requests to `main` or `master`: Harness Verification (`harness-verify.yml`), Security (`security.yml`: Betterleaks secret scanning of the git history, zizmor on the workflow files, Dependency Review, and Composer Audit and Opengrep SAST through `netresearch/typo3-ci-workflows`) and Template drift (`check-template-drift.yml`, which fails when a file governed by the `skill` template of `netresearch/.github` differs from it).
+- Pull requests to `main`: CodeQL analysis of the GitHub Actions workflows (default setup) and the DCO sign-off check. Configured outside the workflows: Copilot code review (a repository ruleset) and CodeRabbit review. Secret scanning with push protection is enabled for the repository.
+- Not on pull requests: OpenSSF Scorecard (`scorecard.yml`) runs on pushes to `main` or `master`, weekly and on manual dispatch.
+- The organisation's rule for static analysis is [Static analysis (SAST)](https://github.com/netresearch/.github/blob/main/SECURITY.md#static-analysis-sast).
 
 ## License
 
