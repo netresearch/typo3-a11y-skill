@@ -72,13 +72,28 @@ The workflows in `.github/workflows/` are thin callers of shared reusables:
   commands.
 - `pr-quality.yml` (skill-repo-skill): approves pull requests of collaborators
   with write access; it checks nothing.
+- `lint.yml` (skill-repo-skill): a second caller of the `validate.yml`
+  reusable, job `Skill Validation`.
 - `auto-merge-deps.yml` (`netresearch/.github`): merges pull requests opened by
   Renovate or Dependabot, except those labelled `deps-no-automerge` or
   `deps-major`.
+- `labeler.yml` (`netresearch/.github`): applies labels from
+  `.github/labeler.yml` to pull requests, without checking out pull request
+  code.
+- `security.yml` (`netresearch/.github`, `netresearch/typo3-ci-workflows`):
+  Betterleaks secret scanning of the git history, zizmor on the workflow files,
+  Dependency Review (pull requests only), and Composer Audit and Opengrep SAST
+  through `netresearch/typo3-ci-workflows`. The organisation's rule for static
+  analysis is
+  [Static analysis (SAST)](https://github.com/netresearch/.github/blob/main/SECURITY.md#static-analysis-sast).
+- `check-template-drift.yml` (`netresearch/.github`): job `Template drift`
+  fails when a file governed by the `skill` template differs from it;
+  `.github/template.yaml` records the template and its exceptions.
+- `scorecard.yml` (`netresearch/.github`): OpenSSF Scorecard on pushes to
+  `main` or `master`, weekly and on manual dispatch, not on pull requests.
 - `release.yml` (skill-repo-skill): builds and signs the release on a tag push.
 
 DCO, CodeQL (default setup, GitHub Actions workflows) and secret scanning with
 push protection are repository settings and GitHub Apps, not workflows in this
-repository. No dependency-vulnerability check runs on pull requests. Releases
-are cut by bumping `.claude-plugin/plugin.json`, merging, then pushing a signed
-`vX.Y.Z` tag.
+repository. Releases are cut by bumping `.claude-plugin/plugin.json`, merging,
+then pushing a signed `vX.Y.Z` tag.
