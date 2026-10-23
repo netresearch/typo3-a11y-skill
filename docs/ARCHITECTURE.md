@@ -82,9 +82,9 @@ The workflows in `.github/workflows/` are thin callers of shared reusables:
   code.
 - `security.yml` (`netresearch/.github`, `netresearch/typo3-ci-workflows`):
   Betterleaks secret scanning of the git history, zizmor on the workflow files,
-  Dependency Review (pull requests only), and Composer Audit and Opengrep SAST
-  through `netresearch/typo3-ci-workflows`. The organisation's rule for static
-  analysis is
+  Dependency Review (pull requests only), Composer Audit and Opengrep SAST
+  through `netresearch/typo3-ci-workflows`, and CodeQL (the `codeql` job) on
+  the GitHub Actions workflows. The organisation's rule for static analysis is
   [Static analysis (SAST)](https://github.com/netresearch/.github/blob/main/SECURITY.md#static-analysis-sast).
 - `check-template-drift.yml` (`netresearch/.github`): job `Template drift`
   fails when a file governed by the `skill` template differs from it;
@@ -93,7 +93,6 @@ The workflows in `.github/workflows/` are thin callers of shared reusables:
   `main` or `master`, weekly and on manual dispatch, not on pull requests.
 - `release.yml` (skill-repo-skill): builds and signs the release on a tag push.
 
-DCO, CodeQL (default setup, GitHub Actions workflows) and secret scanning with
-push protection are repository settings and GitHub Apps, not workflows in this
-repository. Releases are cut by bumping `.claude-plugin/plugin.json`, merging,
-then pushing a signed `vX.Y.Z` tag.
+DCO and secret scanning with push protection are repository settings and GitHub
+Apps, not workflows in this repository. Releases are cut by bumping
+`.claude-plugin/plugin.json`, merging, then pushing a signed `vX.Y.Z` tag.
