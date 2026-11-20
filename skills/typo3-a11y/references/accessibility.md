@@ -702,11 +702,14 @@ Chromium 149):
 - **Recurse on `cssRules.length`, not on `cssRules`.** With CSS nesting, every
   `CSSStyleRule` has a `cssRules` list, empty but truthy, so
   `if (rule.cssRules) { walk(rule.cssRules); continue; }` skips every plain rule
-  and the walk reports none.
+  and the walk reports none. Drop the `continue` as well: a nesting rule has
+  declarations of its own, so check them and then recurse into its children.
 - **Serve the page over HTTP.** Opened as `file://`, reading `cssRules` of a
   linked stylesheet throws `SecurityError`; only inline `<style>` blocks stay
   readable. `python3 -m http.server --bind 127.0.0.1` in the build directory is
-  enough.
+  enough for same-origin stylesheets. A cross-origin stylesheet (a CDN) stays
+  unreadable unless it is loaded with `crossorigin` from a server that sends
+  CORS headers, so serve a local copy instead.
 
 ### Linter Rules
 
