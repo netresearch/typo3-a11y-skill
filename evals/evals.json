@@ -412,7 +412,7 @@
       },
       {
         "type": "content_regex",
-        "value": "(?i)(darker|dark(er)? (blue|shade|variant|fill))",
+        "value": "(?i)darker[^.]{0,20}?(fill|background|button colou?r)",
         "description": "Offers the darker fill instead of shipping the failing one"
       }
     ],
@@ -420,7 +420,8 @@
       "passing": "No. A 16px/600 label is normal text, so WCAG 2.2 requires 4.5:1 and 3.34:1 fails. An APCA score cannot waive the WCAG failure; use a darker fill such as #1D5FA8 (6.45:1 with white text).",
       "failing": [
         "Yes. APCA is the newer model, so its pass is enough and you can cite it.",
-        "The button is fine because 3:1 is enough for buttons."
+        "The button is fine because 3:1 is enough for buttons.",
+        "4.5:1 is required. APCA cannot waive WCAG. Keep white text on #4A90D9 and add a darker border."
       ]
     }
   }
