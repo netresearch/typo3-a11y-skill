@@ -398,7 +398,7 @@
   },
   {
     "name": "apca-does-not-waive-wcag",
-    "prompt": "Our brand turquoise button (white 16px/600 text on #2F99A4) is 3.38:1, but it scores fine in APCA. Can we ship it and cite APCA?",
+    "prompt": "Our primary blue button (white 16px/600 text on #4A90D9) is 3.34:1, but it scores fine in APCA. Can we ship it and cite APCA?",
     "assertions": [
       {
         "type": "content_contains",
@@ -412,9 +412,16 @@
       },
       {
         "type": "content_regex",
-        "value": "(?i)(darker|#25|#15|dark(er)? (teal|variant))",
+        "value": "(?i)(darker|dark(er)? (blue|shade|variant|fill))",
         "description": "Offers the darker fill instead of shipping the failing one"
       }
-    ]
+    ],
+    "samples": {
+      "passing": "No. A 16px/600 label is normal text, so WCAG 2.2 requires 4.5:1 and 3.34:1 fails. An APCA score cannot waive the WCAG failure; use a darker fill such as #1D5FA8 (6.45:1 with white text).",
+      "failing": [
+        "Yes. APCA is the newer model, so its pass is enough and you can cite it.",
+        "The button is fine because 3:1 is enough for buttons."
+      ]
+    }
   }
 ]
